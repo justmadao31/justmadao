@@ -3,9 +3,21 @@
 <head>
     <title><%= title %></title>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<link rel='stylesheet' href='/stylesheets/style.css' />
 <body>
-<h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
-<p>肥皂泡111</p>
+<div id="vueApp" v-clock>
+    <el-container>
+        <el-header>
+            <% include ./include/nav.ejs%>
+        </el-header>
+        <el-main>Main</el-main>
+    </el-container>
+</div>
 </body>
+<script src="/javascripts/yuyuyui/index.js"></script>
 </html>
