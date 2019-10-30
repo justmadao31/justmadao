@@ -2,11 +2,18 @@ Vue.prototype.$axios = axios;
 var vueApp = new Vue({
     el: '#vueApp',
     data: {
-        activeNav: '1'
+        activeNav: '1',
+        activeVideoNode: null,
+        videoUrl: null
     },
     methods: {
         videoTreeClick(data) {
-            console.log(JSON.stringify(data, null, 4));
+            //console.log(JSON.stringify(data, null, 4));
+            if (data.isLeaf) {
+                this.activeVideoNode = data
+                this.videoUrl = 'http://justmadao.club/video/' + this.activeVideoNode.src;
+                this.$refs['video'].load()
+            }
         },
         loadNode(node, resolve) {
             console.log(node.data)
@@ -19,6 +26,7 @@ var vueApp = new Vue({
                 });
         }
     },
+    computed: {},
     created: function () {
 
     }
