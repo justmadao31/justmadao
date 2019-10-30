@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('yuyuyui/index', { title: '闪光的花结' });
 });
 
 module.exports = router;

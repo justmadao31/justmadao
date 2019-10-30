@@ -2,18 +2,27 @@
 <html>
 <head>
     <title><%= title %></title>
+    <% include ./include/head.ejs %>
 </head>
-<% include ./include/head.ejs%>
+
 <body>
 <div id="vueApp" v-clock>
     <el-container>
         <el-header>
-            <% include ./include/nav.ejs%>
+            <% include ./include/nav.ejs %>
         </el-header>
         <el-main>
-            <video style="width: 500px" controls>
-                <source src="/video/kirameki/c1_nomarl.mp4" type="video/mp4">
-            </video>
+            <el-row>
+                <el-col :span="4">
+                    <el-tree :load="loadNode" @node-click="videoTreeClick" lazy>
+                    </el-tree>
+                </el-col>
+                <el-col :span="20">
+                    <video style="width: 100%" controls>
+                        <source src="/video/kirameki/c1_nomarl.mp4" type="video/mp4">
+                    </video>
+                </el-col>
+            </el-row>
         </el-main>
     </el-container>
 </div>
