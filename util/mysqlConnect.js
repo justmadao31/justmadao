@@ -2,10 +2,10 @@ const mysql = require('mysql')
 
 const connectdb=()=>{
     let connection = mysql.createConnection({
-        host     : 'cdb-7uu6csip.gz.tencentcdb.com',
-        port     : '10144',
-        user     : 'soapbuble',
-        password : '1218f321be8e',
+        host     : '47.240.87.248',
+        port     : '3306',
+        user     : 'zhaoqi',
+        password : '123456',
         database : 'yuyuyui'
     })
     return connection;
