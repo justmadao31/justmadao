@@ -4,7 +4,12 @@ var vueApp = new Vue({
     data: {
         activeNav: '1',
         activeVideoNode: null,
-        videoUrl: null
+        videoUrl: null,
+        props: {
+            label: 'label',
+            children: 'children',
+            isLeaf: 'isLeaf'
+        }
     },
     methods: {
         videoTreeClick(data) {

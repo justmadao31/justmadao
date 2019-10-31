@@ -14,7 +14,7 @@
         <el-main>
             <el-row>
                 <el-col :span="4">
-                    <el-tree :load="loadNode" @node-click="videoTreeClick" lazy>
+                    <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" lazy accordion>
                     </el-tree>
                 </el-col>
                 <el-col :span="20">
