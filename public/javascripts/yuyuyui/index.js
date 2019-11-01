@@ -2,6 +2,7 @@ Vue.prototype.$axios = axios;
 var vueApp = new Vue({
     el: '#vueApp',
     data: {
+        userDto: null,
         activeNav: '1',
         activeVideoNode: null,
         videoUrl: null,
@@ -9,6 +10,11 @@ var vueApp = new Vue({
             label: 'label',
             children: 'children',
             isLeaf: 'isLeaf'
+        },
+        dialogLoginVisible: false,
+        loginForm: {
+            username: '',
+            password: ''
         }
     },
     methods: {
@@ -22,7 +28,7 @@ var vueApp = new Vue({
             }
         },
         loadNode(node, resolve) {
-            console.log(node.data)
+            //console.log(node.data)
             this.$axios.post('/yuyuyui/getVideoTreeNode', {pid: node.data ? node.data.id : 0})
                 .then(function (response) {
                     resolve(response.data.result)
@@ -38,6 +44,32 @@ var vueApp = new Vue({
             } else {
                 return this.getVideoPath('/' + p, node.parent);
             }
+        },
+        J_login: function () {
+            this.$axios.post('/login', this.loginForm)
+                .then(response => {
+                    if (response.data.status == 1) {
+                        location.reload()
+                    } else if (response.data.status == 0) {
+                        this.$alert(response.data.message, '错误', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+
+                            }
+                        });
+                    } else if (response.data.status == 2) {
+                        this.$alert(response.data.message, '错误', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+
+                            }
+                        });
+                        this.dialogLoginVisible = false
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     },
     computed: {

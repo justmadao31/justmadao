@@ -17,8 +17,11 @@
                     <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" lazy accordion>
                     </el-tree>
                 </el-col>
-                <el-col :span="20">
-                    <h4>{{videoPath}}</h4>
+                <el-col :span="19" :offset="1">
+                    <h4 style="height: 21px">{{videoPath}}</h4>
+                    <%if(userInfo&&userInfo.level==1){%>
+
+                    <%}%>
                     <video ref="video" style="width: 100%" controls>
                         <source :src="videoUrl" type="video/mp4">
                     </video>
@@ -26,6 +29,21 @@
             </el-row>
         </el-main>
     </el-container>
+
+    <el-dialog title="登录" :visible.sync="dialogLoginVisible" :width="'600px'">
+        <el-form :model="loginForm" :label-position="'left'">
+            <el-form-item label="用户名" :label-width="'100px'">
+                <el-input v-model="loginForm.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" :label-width="'100px'">
+                <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogLoginVisible = false">取 消</el-button>
+            <el-button type="primary" @click="J_login">登 录</el-button>
+        </div>
+    </el-dialog>
 </div>
 </body>
 <script src="/javascripts/yuyuyui/index.js"></script>
