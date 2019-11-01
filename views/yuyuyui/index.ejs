@@ -18,6 +18,7 @@
                     </el-tree>
                 </el-col>
                 <el-col :span="20">
+                    <h4>{{videoPath}}</h4>
                     <video ref="video" style="width: 100%" controls>
                         <source :src="videoUrl" type="video/mp4">
                     </video>

@@ -12,11 +12,12 @@ var vueApp = new Vue({
         }
     },
     methods: {
-        videoTreeClick(data) {
+        videoTreeClick(data, node) {
             //console.log(JSON.stringify(data, null, 4));
+            //console.log(node);
+            this.activeVideoNode = node
             if (data.isLeaf) {
-                this.activeVideoNode = data
-                this.videoUrl = 'http://justmadao.club/video/' + this.activeVideoNode.src;
+                this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
                 this.$refs['video'].load()
             }
         },
@@ -29,9 +30,22 @@ var vueApp = new Vue({
                 .catch(function (error) {
                     console.log(error);
                 });
+        },
+        getVideoPath: function (path, node) {
+            var p = node.label + path
+            if (node.level == 1) {
+                return p
+            } else {
+                return this.getVideoPath('/' + p, node.parent);
+            }
         }
     },
-    computed: {},
+    computed: {
+        videoPath: function () {
+            if (this.activeVideoNode == null) return ''
+            return this.getVideoPath('', this.activeVideoNode)
+        }
+    },
     created: function () {
 
     }
