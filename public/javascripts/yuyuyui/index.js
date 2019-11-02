@@ -85,7 +85,7 @@ var vueApp = new Vue({
                         message: '保存成功',
                         type: 'success'
                     });
-                    this.editNode=null
+                    this.editNode = null
                     this.getVideoTreeNode(this.activeVideoNode).then(res => {
                         this.activeVideoNode.childNodes = []
                         this.activeVideoNode.doCreateChildren(res.data.result)
@@ -95,7 +95,7 @@ var vueApp = new Vue({
         createNewVideoNode: function () {
             this.editNode = {
                 id: null,
-                pid: this.activeVideoNode ? this.activeVideoNode.id : 0,
+                pid: this.activeVideoNode ? this.activeVideoNode.data.id : 0,
                 orderNo: 0,
                 label: '',
                 leaf: false,

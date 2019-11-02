@@ -89,7 +89,7 @@
                             </el-col>
                         </el-row>
                     <% } %>
-                    <video ref="video" style="width: 100%" v-show="videoUrl!=null" controls>
+                    <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">
                         <source :src="videoUrl" type="video/mp4">
                     </video>
                 </el-col>
