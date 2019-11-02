@@ -9,13 +9,14 @@ var vueApp = new Vue({
         props: {
             label: 'label',
             children: 'children',
-            isLeaf: 'isLeaf'
+            isLeaf: 'leaf'
         },
         dialogLoginVisible: false,
         loginForm: {
             username: '',
             password: ''
-        }
+        },
+        editNode: null
     },
     methods: {
         videoTreeClick(data, node) {
@@ -24,18 +25,19 @@ var vueApp = new Vue({
             this.activeVideoNode = node
             if (data.isLeaf) {
                 this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
-                this.$refs['video'].load()
+                this.$nextTick(function () {
+                    this.$refs['video'].load()
+                })
             }
         },
         loadNode(node, resolve) {
             //console.log(node.data)
-            this.$axios.post('/yuyuyui/getVideoTreeNode', {pid: node.data ? node.data.id : 0})
-                .then(function (response) {
-                    resolve(response.data.result)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            this.getVideoTreeNode(node).then(response => {
+                resolve(response.data.result)
+            })
+        },
+        getVideoTreeNode: function (node) {
+            return this.$axios.post('/yuyuyui/getVideoTreeNode', {pid: node.data ? node.data.id : 0})
         },
         getVideoPath: function (path, node) {
             var p = node.label + path
@@ -70,12 +72,54 @@ var vueApp = new Vue({
                 .catch(function (error) {
                     console.log(error);
                 });
+        },
+        clickEditNode: function (e) {
+            this.editNode = JSON.parse(JSON.stringify(e.row))
+        },
+        saveVideoNode: function () {
+            this.editNode.isLeaf = this.editNode.leaf ? 1 : 0
+            //console.log(this.editNode)
+            this.$axios.post('/yuyuyui/saveVideoNode', this.editNode)
+                .then(response => {
+                    this.$message({
+                        message: '保存成功',
+                        type: 'success'
+                    });
+                    this.editNode=null
+                    this.getVideoTreeNode(this.activeVideoNode).then(res => {
+                        this.activeVideoNode.childNodes = []
+                        this.activeVideoNode.doCreateChildren(res.data.result)
+                    })
+                })
+        },
+        createNewVideoNode: function () {
+            this.editNode = {
+                id: null,
+                pid: this.activeVideoNode ? this.activeVideoNode.id : 0,
+                orderNo: 0,
+                label: '',
+                leaf: false,
+                src: '',
+                size: 0,
+                isLeaf: 0
+            }
         }
     },
     computed: {
         videoPath: function () {
             if (this.activeVideoNode == null) return ''
             return this.getVideoPath('', this.activeVideoNode)
+        },
+        editVideoNode: function () {
+            var list = []
+
+            if (this.activeVideoNode) {
+                $.each(this.activeVideoNode.childNodes, (i, o) => {
+                    list.push(o.data)
+                })
+            }
+
+            return list;
         }
     },
     created: function () {

@@ -10,10 +10,9 @@ const db = require('./util/mysqlConnect');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
 var yuyuyuiRouter = require('./routes/yuyuyui');
-
 var app = express();
+
 app.use(session({
     secret: "keyboard cat",
     resave: false,
@@ -34,6 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/yuyuyui', yuyuyuiRouter);
+
+
 app.post('/login', function (req, res) {
     res.status(200);
     res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');//可以支持的消息首部列表
