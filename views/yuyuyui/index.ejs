@@ -17,11 +17,11 @@
         </el-header>
         <el-main>
             <el-row>
-                <el-col :span="4">
+                <el-col :xs="24" :sm="8" :md="4">
                     <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" lazy accordion>
                     </el-tree>
                 </el-col>
-                <el-col :span="19" :offset="1">
+                <el-col :xs="24" :sm="16" :md="20">
                     <h4 style="height: 21px">{{videoPath}}</h4>
                     <% if(userInfo && userInfo.level == 1){ %>
                         <el-row>
