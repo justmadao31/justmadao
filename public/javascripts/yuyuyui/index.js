@@ -25,6 +25,7 @@ var vueApp = new Vue({
             this.activeVideoNode = node
             if (data.isLeaf) {
                 this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
+
                 this.$nextTick(function () {
                     this.$refs['video'].load()
                 })
@@ -103,6 +104,9 @@ var vueApp = new Vue({
                 size: 0,
                 isLeaf: 0
             }
+        },
+        gotoXL: function () {
+            window.open(this.activeVideoNode.data.src)
         }
     },
     computed: {

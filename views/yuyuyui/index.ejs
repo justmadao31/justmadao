@@ -22,6 +22,10 @@
                     </el-tree>
                 </el-col>
                 <el-col :xs="24" :sm="16" :md="20">
+                    <el-alert
+                            title="服务器地址不在大陆地区，所以电信网会很卡，移动和联通似乎很流畅。也可以通过下方的新浪视频去观看。请使用谷歌内核或者ie11以上的浏览器，不然网页可能不正常。"
+                            type="success">
+                    </el-alert>
                     <h4 style="height: 21px">{{videoPath}}</h4>
                     <% if(userInfo && userInfo.level == 1){ %>
                         <el-row>
@@ -92,6 +96,7 @@
                     <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">
                         <source :src="videoUrl" type="video/mp4">
                     </video>
+                    <el-button type="danger" round @click="gotoXL" :disabled="activeVideoNode.data.src==''" v-if="activeVideoNode!=null&&activeVideoNode.data.leaf==1">新浪视频</el-button>
                 </el-col>
             </el-row>
         </el-main>
