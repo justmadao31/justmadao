@@ -107,8 +107,22 @@
             <!--卡面图鉴-->
             <template v-if="activeNav=='2-1'">
                 <el-row>
-                    <el-col :span="24">
-                        卡面
+                    <el-col :xs="12" :sm="12" :md="6" v-for="(item,index) in cardList" style="padding: 10px 20px">
+                        <el-card class="box-card" :body-style="{ padding: '0px' }">
+                            <h5>{{item.title}}·{{item.character}}·{{item.rate}}·{{item.color}}</h5>
+                            <el-image :src="item.beforeImg" :fit="'contain'"></el-image>
+                        </el-card>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="24" style="display: flex; flex-direction:row-reverse">
+                        <el-pagination
+                                background
+                                @current-change="cardsPageChange"
+                                :page-size="cardsPageSize"
+                                layout="total,prev, pager, next,jumper"
+                                :total="cardsTotal">
+                        </el-pagination>
                     </el-col>
                 </el-row>
             </template>

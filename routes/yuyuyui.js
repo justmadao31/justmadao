@@ -72,7 +72,7 @@ router.post('/getCards', function (req, res) {
     db().connect()
     let sql = 'select count(id) as total from cards'
 
-    let sql2 = 'select id,title,beforeImg,`character`,color,rate from cards limit 0,?'
+    let sql2 = 'select id,title,beforeImg,`character`,color,rate from cards limit ?,?'
     pf.dbQuery(db(), sql, null)
         .catch(err => {
             data.status = 0
@@ -81,7 +81,7 @@ router.post('/getCards', function (req, res) {
         .then(result => {
             data.status = 1
             data.totalCount = result[0]['total']
-            return pf.dbQuery(db(), sql2, [req.body.pageSize])
+            return pf.dbQuery(db(), sql2, [(req.body.pageNo - 1) * req.body.pageSize, req.body.pageSize])
         })
         .catch(err => {
             data.status = 0

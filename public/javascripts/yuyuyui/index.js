@@ -3,7 +3,7 @@ var vueApp = new Vue({
     el: '#vueApp',
     data: {
         userDto: null,
-        activeNav: '1',
+        activeNav: '2-1',
         loginForm: {
             username: '',
             password: ''
@@ -19,7 +19,10 @@ var vueApp = new Vue({
         dialogLoginVisible: false,
         editNode: null,
         //卡面图鉴
-
+        cardsPageNo: 1,
+        cardsPageSize: 1,
+        cardsTotal: 0,
+        cardList: []
     },
     methods: {
         //通用部分
@@ -115,10 +118,16 @@ var vueApp = new Vue({
         },
         //卡面图鉴
         getCards: function () {
-            this.$axios.post('/yuyuyui/getCards', {pageNo:1,pageSize:20})
+            this.$axios.post('/yuyuyui/getCards', {pageNo: this.cardsPageNo, pageSize: this.cardsPageSize})
                 .then(res => {
+                    this.cardsTotal = res.data.totalCount
+                    this.cardList = res.data.result;
                     console.log(res)
                 })
+        },
+        cardsPageChange:function (e) {
+            this.cardsPageNo=e
+            this.getCards()
         }
     },
     computed: {
