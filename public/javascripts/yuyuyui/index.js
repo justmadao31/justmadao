@@ -4,6 +4,11 @@ var vueApp = new Vue({
     data: {
         userDto: null,
         activeNav: '1',
+        loginForm: {
+            username: '',
+            password: ''
+        },
+        //剧情视频
         activeVideoNode: null,
         videoUrl: null,
         props: {
@@ -12,41 +17,14 @@ var vueApp = new Vue({
             isLeaf: 'leaf'
         },
         dialogLoginVisible: false,
-        loginForm: {
-            username: '',
-            password: ''
-        },
-        editNode: null
+        editNode: null,
+        //卡面图鉴
+
     },
     methods: {
-        videoTreeClick(data, node) {
-            //console.log(JSON.stringify(data, null, 4));
-            //console.log(node);
-            this.activeVideoNode = node
-            if (data.isLeaf) {
-                this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
-
-                this.$nextTick(function () {
-                    this.$refs['video'].load()
-                })
-            }
-        },
-        loadNode(node, resolve) {
-            //console.log(node.data)
-            this.getVideoTreeNode(node).then(response => {
-                resolve(response.data.result)
-            })
-        },
-        getVideoTreeNode: function (node) {
-            return this.$axios.post('/yuyuyui/getVideoTreeNode', {pid: node.data ? node.data.id : 0})
-        },
-        getVideoPath: function (path, node) {
-            var p = node.label + path
-            if (node.level == 1) {
-                return p
-            } else {
-                return this.getVideoPath('/' + p, node.parent);
-            }
+        //通用部分
+        navSelect: function (key, keyPath) {
+            this.activeNav = key
         },
         J_login: function () {
             this.$axios.post('/login', this.loginForm)
@@ -73,6 +51,33 @@ var vueApp = new Vue({
                 .catch(function (error) {
                     console.log(error);
                 });
+        },
+        //视频剧情
+        videoTreeClick(data, node) {
+            this.activeVideoNode = node
+            if (data.isLeaf) {
+                this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
+
+                this.$nextTick(function () {
+                    this.$refs['video'].load()
+                })
+            }
+        },
+        loadNode(node, resolve) {
+            this.getVideoTreeNode(node).then(response => {
+                resolve(response.data.result)
+            })
+        },
+        getVideoTreeNode: function (node) {
+            return this.$axios.post('/yuyuyui/getVideoTreeNode', {pid: node.data ? node.data.id : 0})
+        },
+        getVideoPath: function (path, node) {
+            var p = node.label + path
+            if (node.level == 1) {
+                return p
+            } else {
+                return this.getVideoPath('/' + p, node.parent);
+            }
         },
         clickEditNode: function (e) {
             this.editNode = JSON.parse(JSON.stringify(e.row))
@@ -107,6 +112,13 @@ var vueApp = new Vue({
         },
         gotoXL: function () {
             window.open(this.activeVideoNode.data.src)
+        },
+        //卡面图鉴
+        getCards: function () {
+            this.$axios.post('/yuyuyui/getCards', {pageNo:1,pageSize:20})
+                .then(res => {
+                    console.log(res)
+                })
         }
     },
     computed: {
@@ -126,7 +138,19 @@ var vueApp = new Vue({
             return list;
         }
     },
-    created: function () {
+    watch: {
+        'activeNav': function (newValue) {
+            if (this.$refs['video']) {
+                if (newValue != '4') {
+                    this.$refs['video'].pause()
+                } else {
+                    this.$refs['video'].play()
+                }
+            }
 
+        }
+    },
+    created: function () {
+        this.getCards()
     }
 })

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser')
 const db = require('../util/mysqlConnect')
+const pf = require('../common/promiseFunction')
 const session = require("express-session");
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -62,6 +63,34 @@ router.post('/saveVideoNode', function (req, res) {
         }
     });
 
+    db().end();
+})
+
+router.post('/getCards', function (req, res) {
+    res.status(200);
+    var data = {}
+    db().connect()
+    let sql = 'select count(id) as total from cards'
+
+    let sql2 = 'select id,title,beforeImg,`character`,color,rate from cards limit 0,?'
+    pf.dbQuery(db(), sql, null)
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+        .then(result => {
+            data.status = 1
+            data.totalCount = result[0]['total']
+            return pf.dbQuery(db(), sql2, [req.body.pageSize])
+        })
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+        .then(result => {
+            data.result = result
+            res.end(JSON.stringify(data));
+        })
     db().end();
 })
 
