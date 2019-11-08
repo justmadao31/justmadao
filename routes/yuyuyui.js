@@ -70,18 +70,58 @@ router.post('/getCards', function (req, res) {
     res.status(200);
     var data = {}
     db().connect()
-    let sql = 'select count(id) as total from cards'
+    let sql = 'select count(*) from cards where 1=1'
 
-    let sql2 = 'select id,title,beforeImg,`character`,color,rate from cards limit ?,?'
-    pf.dbQuery(db(), sql, null)
+    let sql2 = 'select id,title,beforeImg,afterImg,`character`,color,rate,0 as open from cards where 1=1'
+    var list = []
+
+    var condition = ''
+    if (req.body.color.length != 0) {
+        condition += ' and color in ('
+        req.body.color.forEach(function (value, index, array) {
+            if (index != 0 && index != array.length - 2) condition += ','
+            condition += '?'
+            list.push(value)
+        })
+        condition += ') '
+    }
+    if (req.body.rate.length != 0) {
+        condition += ' and rate in ('
+        req.body.rate.forEach(function (value, index, array) {
+            if (index != 0 && index != array.length - 2) condition += ','
+            condition += '?'
+            list.push(value)
+        })
+        condition += ') '
+    }
+    if (req.body.character.length != 0) {
+        condition += ' and `character` in ('
+        req.body.character.forEach(function (value, index, array) {
+            if (index != 0 && index != array.length - 2) condition += ','
+            condition += '?'
+            list.push(value)
+        })
+        condition += ') '
+    }
+
+
+    sql += condition
+    sql2 += condition
+
+    list.push((req.body.pageNo - 1) * req.body.pageSize)
+    list.push(req.body.pageSize)
+    sql2 += ' limit ?,?'
+
+    pf.dbQuery(db(), sql, list)
         .catch(err => {
             data.status = 0
             res.end(JSON.stringify(data));
         })
         .then(result => {
+            console.log(result)
             data.status = 1
-            data.totalCount = result[0]['total']
-            return pf.dbQuery(db(), sql2, [(req.body.pageNo - 1) * req.body.pageSize, req.body.pageSize])
+            data.totalCount = result[0]['count(*)']
+            return pf.dbQuery(db(), sql2, list)
         })
         .catch(err => {
             data.status = 0

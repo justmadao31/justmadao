@@ -111,13 +111,55 @@
             <!--卡面图鉴-->
             <template v-if="activeNav=='2-1'">
                 <el-row>
+                    <el-col :span="24">
+                        <el-form ref="cards" :model="cardsForm">
+                            <el-form-item label="角色">
+                                <el-checkbox-group v-model="cardsForm.character">
+                                    <el-checkbox :label="item.title" name="character"
+                                                 v-for="(item,index) in character"></el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
+                            <el-form-item label="稀有度">
+                                <el-checkbox-group v-model="cardsForm.rate">
+                                    <el-checkbox label="UR" name="rate"></el-checkbox>
+                                    <el-checkbox label="SSR" name="rate"></el-checkbox>
+                                    <el-checkbox label="MR" name="rate"></el-checkbox>
+                                    <el-checkbox label="SR" name="rate"></el-checkbox>
+                                    <el-checkbox label="R" name="rate"></el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
+                            <el-form-item label="属性">
+                                <el-checkbox-group v-model="cardsForm.color">
+                                    <el-checkbox label="赤" name="color"></el-checkbox>
+                                    <el-checkbox label="青" name="color"></el-checkbox>
+                                    <el-checkbox label="绿" name="color"></el-checkbox>
+                                    <el-checkbox label="黄" name="color"></el-checkbox>
+                                    <el-checkbox label="紫" name="color"></el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="getCards(1)">搜 索</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                </el-row>
+
+                <el-row>
                     <el-col :xs="12" :sm="12" :md="6" v-for="(item,index) in cardList" style="padding: 10px 20px">
                         <el-card class="box-card">
                             <div slot="header" class="clearfix">
                                 <span>{{item.title}}·{{item.character}}·{{item.rate}}·{{item.color}}</span>
                                 <el-button style="float: right; padding: 3px 0" type="text">查看</el-button>
                             </div>
-                            <el-image :src="item.beforeImg" :fit="'contain'"></el-image>
+                            <el-image v-show="item.open==0" :src="item.beforeImg" :fit="'contain'"></el-image>
+                            <el-image v-show="item.open==1" :src="item.afterImg" :fit="'contain'"></el-image>
+                            <div style="height: 20px">
+                                <el-switch v-if="item.afterImg!=null&&item.afterImg!=''"
+                                           :value="item.open==1"
+                                           @input="item.open==1?item.open=0:item.open=1"
+                                           active-color="#13ce66">
+                                </el-switch>
+                            </div>
                         </el-card>
                     </el-col>
                 </el-row>
@@ -125,6 +167,8 @@
                     <el-col :span="24" style="display: flex; flex-direction:row-reverse">
                         <el-pagination
                                 background
+                                :current-page.sync="cardsPageNo"
+                                :hide-on-single-page="true"
                                 @current-change="cardsPageChange"
                                 :page-size="cardsPageSize"
                                 layout="total,prev, pager, next,jumper"

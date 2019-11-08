@@ -8,6 +8,112 @@ var vueApp = new Vue({
             username: '',
             password: ''
         },
+        character: [
+            {
+                title: '结城友奈',
+                value: '1'
+            },
+            {
+                title: '东乡美森',
+                value: '2'
+            },
+            {
+                title: '三好夏凛',
+                value: '3'
+            },
+            {
+                title: '犬吠埼风',
+                value: '4'
+            },
+            {
+                title: '犬吠埼树',
+                value: '5'
+            },
+            {
+                title: '乃木园子（中）',
+                value: '6'
+            },
+            {
+                title: '鹫尾须美',
+                value: '7'
+            },
+            {
+                title: '三之轮银',
+                value: '8'
+            },
+            {
+                title: '乃木园子（小）',
+                value: '9'
+            },
+            {
+                title: '乃木若叶',
+                value: '10'
+            },
+            {
+                title: '高嶋友奈',
+                value: '11'
+            },
+            {
+                title: '郡千景',
+                value: '12'
+            },
+            {
+                title: '土居球子',
+                value: '13'
+            },
+            {
+                title: '伊予岛杏',
+                value: '14'
+            },
+            {
+                title: '上里日向',
+                value: '15'
+            },
+            {
+                title: '白鸟歌野',
+                value: '16'
+            },
+            {
+                title: '藤森水都',
+                value: '17'
+            },
+            {
+                title: '古波藏棗',
+                value: '18'
+            },
+            {
+                title: '秋原雪花',
+                value: '19'
+            },
+            {
+                title: '赤岭友奈',
+                value: '20'
+            },
+            {
+                title: '楠芽吹',
+                value: '21'
+            },
+            {
+                title: '山伏雫',
+                value: '22'
+            },
+            {
+                title: '加贺城雀',
+                value: '23'
+            },
+            {
+                title: '弥勒夕海子',
+                value: '24'
+            },
+            {
+                title: '国土亚耶',
+                value: '25'
+            },
+            {
+                title: '其他',
+                value: '26'
+            }
+        ],
         //剧情视频
         activeVideoNode: null,
         videoUrl: null,
@@ -20,9 +126,14 @@ var vueApp = new Vue({
         editNode: null,
         //卡面图鉴
         cardsPageNo: 1,
-        cardsPageSize: 1,
+        cardsPageSize: 8,
         cardsTotal: 0,
-        cardList: []
+        cardList: [],
+        cardsForm: {
+            color: [],
+            rate: [],
+            character: []
+        }
     },
     methods: {
         //通用部分
@@ -117,16 +228,23 @@ var vueApp = new Vue({
             window.open(this.activeVideoNode.data.src)
         },
         //卡面图鉴
-        getCards: function () {
-            this.$axios.post('/yuyuyui/getCards', {pageNo: this.cardsPageNo, pageSize: this.cardsPageSize})
+        getCards: function (page) {
+            if (page) this.cardsPageNo = page
+            var param = {
+                pageNo: this.cardsPageNo,
+                pageSize: this.cardsPageSize,
+                color: this.cardsForm.color,
+                character: this.cardsForm.character,
+                rate: this.cardsForm.rate
+            }
+            this.$axios.post('/yuyuyui/getCards', param)
                 .then(res => {
                     this.cardsTotal = res.data.totalCount
                     this.cardList = res.data.result;
-                    console.log(res)
                 })
         },
-        cardsPageChange:function (e) {
-            this.cardsPageNo=e
+        cardsPageChange: function (e) {
+            this.cardsPageNo = e
             this.getCards()
         }
     },
@@ -160,6 +278,6 @@ var vueApp = new Vue({
         }
     },
     created: function () {
-        this.getCards()
+
     }
 })
