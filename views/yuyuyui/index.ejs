@@ -8,6 +8,10 @@
     .el-row {
         margin-bottom: 20px;
     }
+
+    .text-purple {
+        color: #F925E1;
+    }
 </style>
 <body>
 <div id="vueApp" v-clock>
@@ -108,8 +112,11 @@
             <template v-if="activeNav=='2-1'">
                 <el-row>
                     <el-col :xs="12" :sm="12" :md="6" v-for="(item,index) in cardList" style="padding: 10px 20px">
-                        <el-card class="box-card" :body-style="{ padding: '0px' }">
-                            <h5>{{item.title}}·{{item.character}}·{{item.rate}}·{{item.color}}</h5>
+                        <el-card class="box-card">
+                            <div slot="header" class="clearfix">
+                                <span>{{item.title}}·{{item.character}}·{{item.rate}}·{{item.color}}</span>
+                                <el-button style="float: right; padding: 3px 0" type="text">查看</el-button>
+                            </div>
                             <el-image :src="item.beforeImg" :fit="'contain'"></el-image>
                         </el-card>
                     </el-col>
