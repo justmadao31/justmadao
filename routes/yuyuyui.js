@@ -72,7 +72,7 @@ router.post('/getCards', function (req, res) {
     db().connect()
     let sql = 'select count(*) from cards where 1=1'
 
-    let sql2 = 'select id,title,beforeImg,afterImg,`character`,color,rate,0 as open from cards where 1=1'
+    let sql2 = 'select id,title,beforeImgName,afterImgName,`character`,color,rate,0 as open from cards where 1=1'
     var list = []
 
     var condition = ''

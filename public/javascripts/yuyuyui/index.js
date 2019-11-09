@@ -246,6 +246,13 @@ var vueApp = new Vue({
         cardsPageChange: function (e) {
             this.cardsPageNo = e
             this.getCards()
+        },
+        getCardPath: function (type, path) {
+            if (type == 1) {
+                return path.replace('yuyuyui', '/images/thumbnail')
+            } else {
+                return path.replace('yuyuyui', '/images/cards')
+            }
         }
     },
     computed: {

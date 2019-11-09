@@ -12,6 +12,10 @@
     .text-purple {
         color: #F925E1;
     }
+
+    .el-card__header {
+        padding: 10px 15px;
+    }
 </style>
 <body>
 <div id="vueApp" v-clock>
@@ -145,26 +149,32 @@
                 </el-row>
 
                 <el-row>
-                    <el-col :xs="12" :sm="12" :md="6" v-for="(item,index) in cardList" style="padding: 10px 20px">
+                    <el-col :xs="12" :sm="12" :md="6" v-for="(item,index) in cardList" style="padding: 10px 10px">
                         <el-card class="box-card">
                             <div slot="header" class="clearfix">
-                                <span>{{item.title}}·{{item.character}}·{{item.rate}}·{{item.color}}</span>
-                                <el-button style="float: right; padding: 3px 0" type="text">查看</el-button>
+                                <h4 style="margin: 0">{{item.title}}</h4>
+                                <span style="display: flex;flex-direction: row;justify-content:space-between ">
+                                    {{item.character}}·{{item.rate}}·{{item.color}}
+                                    <el-button style="padding: 3px 0" type="text">查看</el-button>
+                                </span>
                             </div>
-                            <el-image v-show="item.open==0" :src="item.beforeImg" :fit="'contain'"></el-image>
-                            <el-image v-show="item.open==1" :src="item.afterImg" :fit="'contain'"></el-image>
-                            <div style="height: 20px">
-                                <el-switch v-if="item.afterImg!=null&&item.afterImg!=''"
+                            <el-image v-show="item.open==0" :src="getCardPath(1,item.beforeImgName)"
+                                      :fit="'contain'"></el-image>
+                            <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
+                                      :fit="'contain'"></el-image>
+                            <div style="height: 20px;display: flex;flex-direction: row;justify-content:space-between">
+                                <el-switch v-if="item.afterImgName!=null&&item.afterImgName!=''"
                                            :value="item.open==1"
                                            @input="item.open==1?item.open=0:item.open=1"
                                            active-color="#13ce66">
                                 </el-switch>
+                                <el-link type="success" :href="getCardPath(2,item.open==1?item.afterImgName:item.beforeImgName)" download>下载原图</el-link>
                             </div>
                         </el-card>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="24" style="display: flex; flex-direction:row-reverse">
+                    <el-col :span="24" style="display: flex;flex-direction: row;justify-content:space-between ">
                         <el-pagination
                                 background
                                 :current-page.sync="cardsPageNo"
@@ -174,6 +184,7 @@
                                 layout="total,prev, pager, next,jumper"
                                 :total="cardsTotal">
                         </el-pagination>
+
                     </el-col>
                 </el-row>
             </template>
