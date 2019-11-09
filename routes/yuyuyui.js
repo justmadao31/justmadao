@@ -110,7 +110,7 @@ router.post('/getCards', function (req, res) {
 
     list.push((req.body.pageNo - 1) * req.body.pageSize)
     list.push(req.body.pageSize)
-    sql2 += ' limit ?,?'
+    sql2 += ' order by id DESC limit ?,?'
 
     pf.dbQuery(db(), sql, list)
         .catch(err => {
