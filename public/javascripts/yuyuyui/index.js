@@ -117,6 +117,9 @@ var vueApp = new Vue({
         ],
         timeline: [
             {
+                content: '图鉴完成了查看详情',
+                timestamp: '2019-11-10'
+            },{
                 content: '关于本站里添加了收款码，欢迎支持',
                 timestamp: '2019-11-10'
             },
@@ -358,6 +361,12 @@ var vueApp = new Vue({
             formdata.append("fileName", fileName);
             this.$axios.post('/yuyuyui/uploadCardImg', formdata)
                 .then(res => {
+                    this.$alert('上传成功', '成功', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+
+                        }
+                    });
                     if (type == 1) {
                         this.activeCard.beforeImgName = 'yuyuyui/' + fileName
                     } else {
@@ -378,7 +387,12 @@ var vueApp = new Vue({
             console.log(JSON.stringify(this.activeCard, null, 4))
             this.$axios.post('/yuyuyui/saveCard', this.activeCard)
                 .then(res => {
+                    this.$alert('保存成功', '成功', {
+                        confirmButtonText: '确定',
+                        callback: action => {
 
+                        }
+                    });
                 })
         }
     },

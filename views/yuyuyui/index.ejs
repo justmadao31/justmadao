@@ -248,6 +248,7 @@
                                 神花前
                                 <% if(userInfo && userInfo.level == 1){ %>
                                     <label for="uploadBefore" type="button" class="el-button el-button--primary is-round"><span>上 传</span></label>
+                                    <el-button type="warning" round @click="activeCard.beforeImgName=''">删除</el-button>
                                 <%}%>
                             </h3>
                             <form v-show="false">
@@ -260,6 +261,7 @@
                                 神花后
                                 <% if(userInfo && userInfo.level == 1){ %>
                                     <label for="uploadAfter" type="button" class="el-button el-button--primary is-round"><span>上 传</span></label>
+                                    <el-button type="warning" round @click="activeCard.afterImgName=''">删除</el-button>
                                 <%}%>
                             </h3>
                             <form v-show="false">
