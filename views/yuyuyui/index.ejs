@@ -67,7 +67,7 @@
             <div v-show="activeNav=='4'">
                 <el-row>
                     <el-col :xs="24" :sm="8" :md="4">
-                        <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" accordion>
+                        <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" lazy>
                         </el-tree>
                     </el-col>
                     <el-col :xs="24" :sm="16" :md="20">
