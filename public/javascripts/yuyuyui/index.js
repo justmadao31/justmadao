@@ -288,7 +288,11 @@ var vueApp = new Vue({
         }
     },
     watch: {
-        'activeNav': function (newValue) {
+        'activeNav': function (newValue, oldValue) {
+            if (newValue == null) {
+                this.activeNav = oldValue
+            }
+
             if (this.$refs['video']) {
                 if (newValue != '4') {
                     this.$refs['video'].pause()

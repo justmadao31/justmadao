@@ -51,7 +51,7 @@ router.post('/saveVideoNode', function (req, res) {
             data.status = 0
             res.end(JSON.stringify(data));
         })
-        .then(res => {
+        .then(result => {
             data.status = 1
             data.result = result
             res.end(JSON.stringify(data));

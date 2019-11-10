@@ -7,6 +7,7 @@ const logger = require('morgan');
 const session = require("express-session");
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const pf = require('./common/promiseFunction')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -48,15 +49,14 @@ app.post('/login', function (req, res) {
         res.end(JSON.stringify(data));
         return
     }
-
-    db().connect()
     let sql = 'select id,name,level,email from user where name=? and password=?'
-    db().query(sql, [req.body.username, req.body.password], function (err, result) {
-        if (err) {
-            console.log(err.message)
+
+    pf.dbQuery(sql,[req.body.username, req.body.password])
+        .catch(err=>{
             data.status = 0
             res.end(JSON.stringify(data));
-        } else {
+        })
+        .then(result=>{
             if (result.length == 0) {
                 data.status = 0
                 data.message = '用户名或密码错误'
@@ -67,10 +67,7 @@ app.post('/login', function (req, res) {
             }
 
             res.end(JSON.stringify(data));
-        }
-
-    });
-    db().end();
+        })
 })
 
 // catch 404 and forward to error handler
