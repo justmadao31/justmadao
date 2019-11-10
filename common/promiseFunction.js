@@ -4,9 +4,9 @@ module.exports = {
         let connection = mysql.createConnection({
             host     : 'localhost',
             port     : '3306',
-            user     : 'zhaoqi',
-            password : '123456',
-            database : 'zq'
+            user     : '1111',
+            password : '2222',
+            database : '3333'
         })
 
 
