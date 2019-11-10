@@ -7,7 +7,6 @@ const logger = require('morgan');
 const session = require("express-session");
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const db = require('./util/mysqlConnect');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
