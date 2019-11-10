@@ -180,9 +180,9 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
         if (err) {
             res.send({status: 0});
         } else {
-            gm('public/images/' + req.body.fileName)
+            gm('/opt/justmadao/public/images/' + req.body.fileName)
                 .resize(480, 270, "!")
-                .write('public/images/thumbnail/' + req.body.fileName, function (err) {
+                .write('/opt/justmadao/public/images/thumbnail/' + req.body.fileName, function (err) {
                     if (err) {
                         console.log(err);
                     }
