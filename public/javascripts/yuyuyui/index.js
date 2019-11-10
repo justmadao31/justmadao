@@ -3,7 +3,7 @@ var vueApp = new Vue({
     el: '#vueApp',
     data: {
         userDto: null,
-        activeNav: '2-1',
+        activeNav: '1',
         loginForm: {
             username: '',
             password: ''
@@ -115,6 +115,28 @@ var vueApp = new Vue({
                 value: '26'
             }
         ],
+        timeline: [
+            {
+                content: '关于本站里添加了收款码，欢迎支持',
+                timestamp: '2019-11-10'
+            },
+            {
+                content: '图鉴添加了缩略图',
+                timestamp: '2019-11-9'
+            },
+            {
+                content: '添加了图鉴查询（没有详情查看）',
+                timestamp: '2019-11-9'
+            },
+            {
+                content: '增加了视频剧情',
+                timestamp: '2019-11'
+            }, {
+
+                content: '创建成功',
+                timestamp: '2019-11'
+            }
+        ],
         //剧情视频
         activeVideoNode: null,
         videoUrl: null,
@@ -181,9 +203,31 @@ var vueApp = new Vue({
             }
         },
         loadNode(node, resolve) {
-            this.getVideoTreeNode(node).then(response => {
-                resolve(response.data.result)
-            })
+            if (node.level == 0) {
+                resolve([{
+                    "id": 1,
+                    "pid": 0,
+                    "label": "闪光的花结",
+                    "isLeaf": 0,
+                    "src": "",
+                    "size": 0,
+                    "orderNo": 0,
+                    "leaf": false
+                }, {
+                    "id": 6,
+                    "pid": 0,
+                    "label": "树海的记忆",
+                    "isLeaf": 0,
+                    "src": "",
+                    "size": 0,
+                    "orderNo": 1,
+                    "leaf": false
+                }])
+            } else {
+                this.getVideoTreeNode(node).then(response => {
+                    resolve(response.data.result)
+                })
+            }
         },
         getVideoTreeNode: function (node) {
             return this.$axios.post('/yuyuyui/getVideoTreeNode', {pid: node.data ? node.data.id : 0})

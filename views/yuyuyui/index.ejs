@@ -16,6 +16,21 @@
     .el-card__header {
         padding: 10px 15px;
     }
+    .el-carousel__item h3 {
+        color: #475669;
+        font-size: 14px;
+        opacity: 0.75;
+        line-height: 150px;
+        margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+        background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n+1) {
+        background-color: #d3dce6;
+    }
 </style>
 <body>
 <div id="vueApp" v-clock>
@@ -24,6 +39,30 @@
             <% include ./include/nav.ejs %>
         </el-header>
         <el-main>
+            <div v-show="activeNav=='1'">
+                <el-row>
+                    <el-col :span="4">
+                        <el-timeline>
+                            <el-timeline-item
+                                    v-for="(activity, index) in timeline"
+                                    :key="index"
+                                    :timestamp="activity.timestamp">
+                                {{activity.content}}
+                            </el-timeline-item>
+                        </el-timeline>
+                    </el-col>
+                    <el-col :span="20">
+                        <div class="block">
+                            <h2 class="demonstration" style="text-align: center">更新信息</h2>
+                            <el-carousel trigger="click" height="150px">
+                                <el-carousel-item v-for="n in 6" :key="n">
+                                    <h3 class="small"></h3>
+                                </el-carousel-item>
+                            </el-carousel>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
             <!--剧情视频-->
             <div v-show="activeNav=='4'">
                 <el-row>
@@ -182,7 +221,7 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="24" style="display: flex;flex-direction: row;justify-content:space-between ">
+                        <el-col :span="24" style="display: flex;flex-direction: row-reverse;justify-content:space-between ">
                             <el-pagination
                                     background
                                     :current-page.sync="cardsPageNo"
@@ -200,10 +239,19 @@
 
                 </div>
             </div>
+            <div v-show="activeNav=='3'">
+                <div style="width: 80%;margin: 0 auto">
+                    大家好，我是肥皂泡。因为被人用那1p的剧情追着举报，ab站都阵亡了。于是想着自己建个网站吧。就试着做了一个简单的网站放花结视频。但是想着光放花结视频太浪费了，所以加了图鉴，
+                    以后有机会的话会试着加点其他的资源或者功能什么的。爱发电也被举报掉了，还是直接发收款码吧，如果愿意的话可以来赞助一下。<br>
+                    <div style="max-width:800px;display: flex;flex-direction: row;justify-content: space-between;margin-top: 20px">
+                        <el-image style="width: 300px" src="/images/zfb.JPG" :fit="'fit'"></el-image>
+                        <el-image style="width: 300px" src="/images/wx.JPG" :fit="'fit'"></el-image>
+                    </div>
+                </div>
+            </div>
         </el-main>
     </el-container>
     <div v-loading.fullscreen.lock="loading">
-
 
     </div>
     <el-dialog title="登录" :visible.sync="dialogLoginVisible" :width="'600px'">
