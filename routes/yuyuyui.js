@@ -3,6 +3,10 @@ const router = express.Router();
 const bodyParser = require('body-parser')
 const pf = require('../common/promiseFunction')
 const session = require("express-session");
+var fs = require('fs');
+var multer = require('multer')
+var upload = multer({dest: 'public/images/'});
+var gm = require('gm')
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('yuyuyui/index', {title: '闪光的花结', userInfo: req.session.userInfo});
@@ -123,5 +127,70 @@ router.post('/getCards', function (req, res) {
             res.end(JSON.stringify(data));
         })
 })
+
+router.post('/getCardById', function (req, res) {
+    res.status(200);
+    var data = {}
+
+    var sql = 'select * from cards where id=?'
+    pf.dbQuery(sql, [req.body.id])
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+        .then(result => {
+            data.result = result
+            res.end(JSON.stringify(data));
+        })
+})
+
+router.post('/saveCard', function (req, res) {
+    res.status(200);
+    var data = {}
+    var list = [req.body.title, req.body.character, req.body.color, req.body.rate, req.body.beforeImgName, req.body.afterImgName, req.body.leaderSkillName
+        , req.body.leaderSkillConctent, req.body.skillName, req.body.skillContent, req.body.abilityName, req.body.abilityContent, req.body.description
+        , req.body.akt, req.body.hp, req.body.grown, req.body.speed, req.body.cost, req.body.crt, req.body.strength, req.body.id]
+    let sql = ''
+    if (req.body.id == null) {
+        sql = 'insert into cards (title,`character`,color,rate,beforeImgName,afterImgName,' +
+            'leaderSkillName,leaderSkillConctent,skillName,skillContent,abilityName,abilityContent,description,' +
+            'akt,hp,grown,speed,cost,crt,strength) values ' +
+            '(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+    } else {
+        sql = 'update cards set title=?,`character`=?,color=?,rate=?,beforeImgName=?,afterImgName=?,' +
+            ' leaderSkillName=?,leaderSkillConctent=?,skillName=?,skillContent=?,abilityName=?,abilityContent=?,description=?,' +
+            ' akt=?,hp=?,grown=?,speed=?,cost=?,crt=?,strength=? where id=?'
+    }
+
+    pf.dbQuery(sql, list)
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+        .then(result => {
+            data.status = 1
+            data.result = result
+            res.end(JSON.stringify(data));
+        })
+})
+
+router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
+    var file = req.file;
+    fs.rename(file.path, 'public/images/cards/' + req.body.fileName, function (err, data) {
+        if (err) {
+            res.send({status: 0});
+        } else {
+            gm('public/images/' + req.body.fileName)
+                .resize(480, 270, "!")
+                .write('public/images/thumbnail/' + req.body.fileName, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            res.send({status: 1});
+        }
+    })
+
+});
 
 module.exports = router;

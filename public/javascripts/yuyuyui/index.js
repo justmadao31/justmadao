@@ -303,15 +303,83 @@ var vueApp = new Vue({
         },
         toCardInfo: function (card) {
             this.isCardEdit = true
+            this.getCardById(card ? card.id : null)
         },
         getCardById: function (id) {
             if (id) {
-                return this.$axios('/yuyuyui/getCardById', {id: id})
+                this.$axios.post('/yuyuyui/getCardById', {id: id})
+                    .then(res => {
+                        this.activeCard = res.data.result[0];
+                    })
             } else {
-                return new Promise(function (resolve) {
+                this.activeCard = {
+                    "id": null,
+                    "title": "",
+                    "character": "",
+                    "color": "",
+                    "rate": "",
+                    "createtime": "",
+                    "beforeImg": "",
+                    "beforeImgName": "",
+                    "afterImg": "",
+                    "afterImgName": "",
+                    "leaderSkillName": "",
+                    "leaderSkillConctent": "",
+                    "skillName": "",
+                    "skillContent": "",
+                    "abilityName": "",
+                    "abilityContent": "",
+                    "description": "",
+                    "akt": 0,
+                    "hp": 0,
+                    "grown": 0,
+                    "speed": "",
+                    "cost": 0,
+                    "crt": '',
+                    "strength": ''
+                }
+            }
+        },
+        uploadCardImg: function (type) {
+            if (this.activeCard.title == '' || this.activeCard.character == '') {
+                this.$alert('请先填写卡名和角色', '错误', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                });
+                return
+            }
+
+            var formdata = new FormData()
+            var file = document.getElementById(type == 1 ? 'uploadBefore' : 'uploadAfter').files[0]
+            var fileName = this.activeCard.title + '·' + this.activeCard.character + (type == 1 ? 'before' : 'after') + file.name.substring(file.name.lastIndexOf('.'), file.name.length)
+            formdata.append("pic", file);
+            formdata.append("fileName", fileName);
+            this.$axios.post('/yuyuyui/uploadCardImg', formdata)
+                .then(res => {
+                    if (type == 1) {
+                        this.activeCard.beforeImgName = 'yuyuyui/' + fileName
+                    } else {
+                        this.activeCard.afterImgName = 'yuyuyui/' + fileName
+                    }
+                })
+        },
+        saveCard: function () {
+            if (this.activeCard.title == '') {
+                this.$alert('请先填写卡名', '错误', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+
+                    }
+                });
+                return
+            }
+            console.log(JSON.stringify(this.activeCard, null, 4))
+            this.$axios.post('/yuyuyui/saveCard', this.activeCard)
+                .then(res => {
 
                 })
-            }
         }
     },
     computed: {
@@ -329,6 +397,21 @@ var vueApp = new Vue({
             }
 
             return list;
+        },
+        cardInfo: function () {
+            if (this.activeCard) {
+                return [
+                    {
+                        label: '领队技能',
+                        name: this.activeCard.leaderSkillName,
+                        description: this.activeCard.leaderSkillConctent
+                    },
+                    {label: '必杀技', name: this.activeCard.skillName, description: this.activeCard.skillContent},
+                    {label: '被动效果', name: this.activeCard.abilityName, description: this.activeCard.abilityContent}
+                ]
+            } else {
+                return []
+            }
         }
     },
     watch: {

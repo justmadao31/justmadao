@@ -185,6 +185,10 @@
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="getCards(1)">搜 索</el-button>
+
+                                    <% if(userInfo && userInfo.level == 1){ %>
+                                        <el-button type="success" @click="toCardInfo()">新 建</el-button>
+                                    <%}%>
                                 </el-form-item>
                             </el-form>
                         </el-col>
@@ -205,17 +209,17 @@
                                           :fit="'contain'"></el-image>
                                 <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
                                           :fit="'contain'"></el-image>
-                                <div style="height: 20px;display: flex;flex-direction: row;justify-content:space-between">
-                                    <el-switch v-if="item.afterImgName!=null&&item.afterImgName!=''"
-                                               :value="item.open==1"
-                                               @input="item.open==1?item.open=0:item.open=1"
-                                               active-color="#13ce66">
-                                    </el-switch>
+                                <div style="height: 20px;display: flex;flex-direction: row-reverse;justify-content:space-between">
                                     <el-link type="success"
                                              :href="getCardPath(2,item.open==1?item.afterImgName:item.beforeImgName)"
                                              target="_blank"
                                              download>下载原图
                                     </el-link>
+                                    <el-switch v-if="item.afterImgName!=null&&item.afterImgName!=''"
+                                               :value="item.open==1"
+                                               @input="item.open==1?item.open=0:item.open=1"
+                                               active-color="#13ce66">
+                                    </el-switch>
                                 </div>
                             </el-card>
                         </el-col>
@@ -235,7 +239,169 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div v-show="isCardEdit">
+                <div v-show="isCardEdit" v-if="activeCard!=null">
+                    <el-button @click="isCardEdit=false" type="primary">返回列表</el-button>
+                    <h1>{{activeCard.title}}·{{activeCard.rate}}·{{activeCard.character}}·{{activeCard.color}}</h1>
+                    <el-row>
+                        <el-col :span="12" style="padding: 10px">
+                            <h3>
+                                神花前
+                                <% if(userInfo && userInfo.level == 1){ %>
+                                    <label for="uploadBefore" type="button" class="el-button el-button--primary is-round"><span>上 传</span></label>
+                                <%}%>
+                            </h3>
+                            <form v-show="false">
+                                <input type="file" name="pic" id="uploadBefore" @change="uploadCardImg(1)">
+                            </form>
+                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.beforeImgName)" :fit="'fit'" v-if="activeCard.beforeImgName!=''"></el-image>
+                        </el-col>
+                        <el-col :span="12" style="padding: 10px">
+                            <h3>
+                                神花后
+                                <% if(userInfo && userInfo.level == 1){ %>
+                                    <label for="uploadAfter" type="button" class="el-button el-button--primary is-round"><span>上 传</span></label>
+                                <%}%>
+                            </h3>
+                            <form v-show="false">
+                                <input type="file" name="pic" id="uploadAfter" @change="uploadCardImg(2)">
+                            </form>
+                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.afterImgName)" :fit="'fit'" v-if="activeCard.afterImgName!=''"></el-image>
+                        </el-col>
+                    </el-row>
+
+                    <% if(userInfo && userInfo.level == 1){ %>
+                        <el-row>
+                            <el-form ref="form" :model="activeCard" label-width="160px" style="max-width: 1000px">
+                                <el-form-item label="卡名">
+                                    <el-input v-model="activeCard.title"></el-input>
+                                </el-form-item>
+                                <el-form-item label="角色">
+                                    <el-select v-model="activeCard.character" placeholder="">
+                                        <el-option :label="item.title" :value="item.title" v-for="(item,index) in character"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="属性">
+                                    <el-select v-model="activeCard.color" placeholder="">
+                                        <el-option label="赤" value="赤"></el-option>
+                                        <el-option label="青" value="青"></el-option>
+                                        <el-option label="绿" value="绿"></el-option>
+                                        <el-option label="紫" value="紫"></el-option>
+                                        <el-option label="黄" value="黄"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="稀有度" style="width: 100%">
+                                    <el-select v-model="activeCard.rate" placeholder="">
+                                        <el-option label="UR" value="UR"></el-option>
+                                        <el-option label="SSR" value="SSR"></el-option>
+                                        <el-option label="MR" value="MR"></el-option>
+                                        <el-option label="SR" value="SR"></el-option>
+                                        <el-option label="R" value="R"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="HP">
+                                    <el-input v-model.Number="activeCard.hp"></el-input>
+                                </el-form-item>
+                                <el-form-item label="AKT">
+                                    <el-input v-model.Number="activeCard.akt"></el-input>
+                                </el-form-item>
+                                <el-form-item label="速度">
+                                    <el-input v-model="activeCard.speed"></el-input>
+                                </el-form-item>
+                                <el-form-item label="cost">
+                                    <el-input v-model.Number="activeCard.cost"></el-input>
+                                </el-form-item>
+                                <el-form-item label="crt">
+                                    <el-input v-model="activeCard.crt"></el-input>
+                                </el-form-item>
+                                <el-form-item label="韧性">
+                                    <el-input v-model="activeCard.strength"></el-input>
+                                </el-form-item>
+                                <el-form-item label="成长">
+                                    <el-input v-model="activeCard.grown"></el-input>
+                                </el-form-item>
+                                <el-form-item label="队长技能">
+                                    <el-input v-model="activeCard.leaderSkillName"></el-input>
+                                </el-form-item>
+                                <el-form-item label="队长技能介绍">
+                                    <el-input v-model="activeCard.leaderSkillConctent"></el-input>
+                                </el-form-item>
+                                <el-form-item label="必杀技">
+                                    <el-input v-model="activeCard.skillName"></el-input>
+                                </el-form-item>
+                                <el-form-item label="必杀技介绍">
+                                    <el-input v-model="activeCard.skillContent"></el-input>
+                                </el-form-item>
+                                <el-form-item label="被动效果">
+                                    <el-input v-model="activeCard.abilityName"></el-input>
+                                </el-form-item>
+                                <el-form-item label="被动效果介绍">
+                                    <el-input v-model="activeCard.abilityContent"></el-input>
+                                </el-form-item>
+                                <el-form-item label="简评">
+                                    <el-input type="textarea" v-model="activeCard.description"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="saveCard">保存</el-button>
+                                    <el-button @click="isCardEdit=false">取消</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-row>
+                    <%}else{%>
+                        <el-row>
+                            <el-table
+                                    border
+                                    :data="[activeCard]"
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="hp"
+                                        label="HP">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="akt"
+                                        label="AKT">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="speed"
+                                        label="速度">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="strength"
+                                        label="韧性">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="crt"
+                                        label="CRT">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="cost"
+                                        label="COST">
+                                </el-table-column>
+                            </el-table>
+                        </el-row>
+                        <el-row>
+                            <el-table
+                                    border
+                                    :data="cardInfo"
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="label"
+                                        label="">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="name"
+                                        label="名称">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="description"
+                                        label="描述">
+                                </el-table-column>
+                            </el-table>
+                        </el-row>
+                        <el-row>
+                            <div>简评：{{activeCard.description}}</div>
+                        </el-row>
+                    <%}%>
+
 
                 </div>
             </div>
