@@ -206,9 +206,9 @@
                                 </span>
                                 </div>
                                 <el-image v-show="item.open==0" :src="getCardPath(1,item.beforeImgName)"
-                                          :fit="'contain'"></el-image>
+                                          :fit="'contain'" lazy></el-image>
                                 <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
-                                          :fit="'contain'"></el-image>
+                                          :fit="'contain'" lazy></el-image>
                                 <div style="height: 20px;display: flex;flex-direction: row-reverse;justify-content:space-between">
                                     <el-link type="success"
                                              :href="getCardPath(2,item.open==1?item.afterImgName:item.beforeImgName)"
@@ -254,7 +254,7 @@
                             <form v-show="false">
                                 <input type="file" name="pic" id="uploadBefore" @change="uploadCardImg(1)">
                             </form>
-                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.beforeImgName)" :fit="'fit'" v-if="activeCard.beforeImgName!=''"></el-image>
+                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.beforeImgName)" :fit="'fit'" v-if="activeCard.beforeImgName!=''" lazy></el-image>
                         </el-col>
                         <el-col :span="12" style="padding: 10px">
                             <h3>
@@ -267,7 +267,7 @@
                             <form v-show="false">
                                 <input type="file" name="pic" id="uploadAfter" @change="uploadCardImg(2)">
                             </form>
-                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.afterImgName)" :fit="'fit'" v-if="activeCard.afterImgName!=''"></el-image>
+                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.afterImgName)" :fit="'fit'" v-if="activeCard.afterImgName!=''" lazy></el-image>
                         </el-col>
                     </el-row>
 
@@ -412,8 +412,8 @@
                     大家好，我是肥皂泡。因为被人用那1p的剧情追着举报，ab站都阵亡了。于是想着自己建个网站吧。就试着做了一个简单的网站放花结视频。但是想着光放花结视频太浪费了，所以加了图鉴，
                     以后有机会的话会试着加点其他的资源或者功能什么的。爱发电也被举报掉了，还是直接发收款码吧，如果愿意的话可以来赞助一下。<br>
                     <div style="max-width:800px;display: flex;flex-direction: row;justify-content: space-between;margin-top: 20px">
-                        <el-image style="width: 300px" src="/images/zfb.JPG" :fit="'fit'"></el-image>
-                        <el-image style="width: 300px" src="/images/wx.JPG" :fit="'fit'"></el-image>
+                        <el-image style="width: 300px" src="/images/zfb.JPG" :fit="'fit'" lazy></el-image>
+                        <el-image style="width: 300px" src="/images/wx.JPG" :fit="'fit'" lazy></el-image>
                     </div>
                 </div>
             </div>
