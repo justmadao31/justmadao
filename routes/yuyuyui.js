@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser')
-const db = require('../util/mysqlConnect')
 const pf = require('../common/promiseFunction')
 const session = require("express-session");
 /* GET home page. */
@@ -19,31 +18,26 @@ router.all('*', function (req, res, next) {
 router.post('/getVideoTreeNode', function (req, res) {
     res.status(200);
     var data = {}
-    db().connect()
     let sql = 'select * from videoTree where pid=? order by orderNo'
-    db().query(sql, req.body.pid, function (err, result) {
-        if (err) {
-            console.log(err.message)
+
+    pf.dbQuery(sql, [req.body.pid])
+        .catch(err => {
             data.status = 0
             res.end(JSON.stringify(data));
-        } else {
+        })
+        .then(result => {
             result.forEach(function (v, i) {
                 v.leaf = v.isLeaf == 1
             })
             data.status = 1
             data.result = result
             res.end(JSON.stringify(data));
-        }
-
-    });
-
-    db().end();
+        })
 })
 
 router.post('/saveVideoNode', function (req, res) {
     res.status(200);
     var data = {}
-    db().connect()
     var list = [req.body.pid, req.body.label, req.body.isLeaf, req.body.src, req.body.size, req.body.orderNo, req.body.id]
     let sql = ''
     if (req.body.id == null) {
@@ -51,25 +45,22 @@ router.post('/saveVideoNode', function (req, res) {
     } else {
         sql = 'update videoTree set pid=?,label=?,isLeaf=?,src=?,size=?,orderNo=? where id=?'
     }
-    db().query(sql, list, function (err, result) {
-        if (err) {
-            console.log(err.message)
+
+    pf.dbQuery(sql, list)
+        .catch(err => {
             data.status = 0
             res.end(JSON.stringify(data));
-        } else {
+        })
+        .then(res => {
             data.status = 1
             data.result = result
             res.end(JSON.stringify(data));
-        }
-    });
-
-    db().end();
+        })
 })
 
 router.post('/getCards', function (req, res) {
     res.status(200);
     var data = {}
-    db().connect()
     let sql = 'select count(*) from cards where 1=1'
 
     let sql2 = 'select id,title,beforeImgName,afterImgName,`character`,color,rate,0 as open from cards where 1=1'
@@ -112,7 +103,7 @@ router.post('/getCards', function (req, res) {
     list.push(req.body.pageSize)
     sql2 += ' order by id DESC limit ?,?'
 
-    pf.dbQuery(db(), sql, list)
+    pf.dbQuery(sql, list)
         .catch(err => {
             data.status = 0
             res.end(JSON.stringify(data));
@@ -121,7 +112,7 @@ router.post('/getCards', function (req, res) {
             console.log(result)
             data.status = 1
             data.totalCount = result[0]['count(*)']
-            return pf.dbQuery(db(), sql2, list)
+            return pf.dbQuery(sql2, list)
         })
         .catch(err => {
             data.status = 0
@@ -131,7 +122,6 @@ router.post('/getCards', function (req, res) {
             data.result = result
             res.end(JSON.stringify(data));
         })
-    db().end();
 })
 
 module.exports = router;

@@ -1,7 +1,17 @@
+const mysql = require('mysql')
 module.exports = {
-    dbQuery: function (db, sql, list) {
+    dbQuery: function (sql, list) {
+        let connection = mysql.createConnection({
+            host     : 'localhost',
+            port     : '3306',
+            user     : 'zhaoqi',
+            password : '123456',
+            database : 'zq'
+        })
+
+
         return new Promise(function (resolve, reject) {
-            var query = db.query(sql, list, function (err, result) {
+            var query = connection.query(sql, list, function (err, result) {
                 if (err) {
                     console.log(err.message)
                     reject(err)
@@ -10,6 +20,7 @@ module.exports = {
                 }
             })
             console.log(query.sql)
+            connection.end()
         })
     }
 }

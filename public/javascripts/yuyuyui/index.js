@@ -8,6 +8,7 @@ var vueApp = new Vue({
             username: '',
             password: ''
         },
+        loading: false,
         character: [
             {
                 title: '结城友奈',
@@ -126,14 +127,16 @@ var vueApp = new Vue({
         editNode: null,
         //卡面图鉴
         cardsPageNo: 1,
-        cardsPageSize: 8,
-        cardsTotal: 0,
+        cardsPageSize: 12,
+        cardsTotal: 1,
         cardList: [],
         cardsForm: {
             color: [],
             rate: [],
             character: []
-        }
+        },
+        isCardEdit: false,
+        activeCard: null
     },
     methods: {
         //通用部分
@@ -249,9 +252,21 @@ var vueApp = new Vue({
         },
         getCardPath: function (type, path) {
             if (type == 1) {
-                return path.replace('yuyuyui', '/images/thumbnail')
+                return path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
             } else {
                 return path.replace('yuyuyui', '/images/cards')
+            }
+        },
+        toCardInfo: function (card) {
+            this.isCardEdit = true
+        },
+        getCardById: function (id) {
+            if (id) {
+                return this.$axios('/yuyuyui/getCardById', {id: id})
+            } else {
+                return new Promise(function (resolve) {
+
+                })
             }
         }
     },
@@ -285,6 +300,24 @@ var vueApp = new Vue({
         }
     },
     created: function () {
+// 添加请求拦截器
+        this.$axios.interceptors.request.use(config => {
+            // 在发送请求之前做些什么
+            this.loading = true
+            return config;
+        }, function (error) {
+            // 对请求错误做些什么
+            return Promise.reject(error);
+        });
 
+// 添加响应拦截器
+        this.$axios.interceptors.response.use(response => {
+            // 对响应数据做点什么
+            this.loading = false
+            return response;
+        }, function (error) {
+            // 对响应错误做点什么
+            return Promise.reject(error);
+        });
     }
 })

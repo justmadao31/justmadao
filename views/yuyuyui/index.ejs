@@ -25,173 +25,187 @@
         </el-header>
         <el-main>
             <!--剧情视频-->
-            <el-row v-show="activeNav=='4'">
-                <el-col :xs="24" :sm="8" :md="4">
-                    <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" lazy accordion>
-                    </el-tree>
-                </el-col>
-                <el-col :xs="24" :sm="16" :md="20">
-                    <el-alert
-                            title="服务器地址不在大陆地区，所以电信网会很卡，移动和联通似乎很流畅。也可以通过下方的新浪视频去观看。请使用谷歌内核或者ie11以上的浏览器，不然网页可能不正常。"
-                            type="success">
-                    </el-alert>
-                    <h4 style="height: 21px">{{videoPath}}</h4>
-                    <% if(userInfo && userInfo.level == 1){ %>
-                        <el-row>
-                            <el-col :span="24">
-                                <el-table
-                                        :data="editVideoNode"
-                                        height="400"
-                                        style="width: 100%">
-                                    <el-table-column
-                                            prop="id"
-                                            label="id">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="pid"
-                                            label="pid">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="label"
-                                            label="label">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="isLeaf"
-                                            label="isLeaf">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="orderNo"
-                                            label="orderNo">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="src"
-                                            label="src">
-                                    </el-table-column>
-                                    <el-table-column
-                                            label="操作">
-                                        <template slot-scope="scope">
-                                            <el-button type="text" size="small" @click="clickEditNode(scope)">查看
-                                            </el-button>
-                                            <el-button type="text" size="small">删除</el-button>
-                                        </template>
-                                    </el-table-column>
-                                </el-table>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="24">
-                                <el-button type="success" round @click="createNewVideoNode">创建新节点</el-button>
-                                <el-form ref="editVideoNodeFrom" :model="editNode" label-width="160px"
-                                         v-if="editNode!=null"
-                                         :label-position="'left'">
-                                    <el-form-item label="名称">
-                                        <el-input v-model="editNode.label"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="路径">
-                                        <el-input v-model="editNode.src"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="序号">
-                                        <el-input v-model.Number="editNode.orderNo"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="是否是叶子节点">
-                                        <el-switch v-model="editNode.leaf"></el-switch>
-                                    </el-form-item>
-                                    <el-form-item>
-                                        <el-button type="primary" @click="saveVideoNode">保存</el-button>
-                                        <el-button @click="editNode=null">取消</el-button>
-                                    </el-form-item>
-                                </el-form>
-                            </el-col>
-                        </el-row>
-                    <% } %>
-                    <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">
-                        <source :src="videoUrl" type="video/mp4">
-                    </video>
-                    <el-button type="danger" round @click="gotoXL" :disabled="activeVideoNode.data.src==''"
-                               v-if="activeVideoNode!=null&&activeVideoNode.data.leaf==1">新浪视频
-                    </el-button>
-                </el-col>
-            </el-row>
+            <div v-show="activeNav=='4'">
+                <el-row>
+                    <el-col :xs="24" :sm="8" :md="4">
+                        <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" lazy accordion>
+                        </el-tree>
+                    </el-col>
+                    <el-col :xs="24" :sm="16" :md="20">
+                        <el-alert
+                                title="服务器地址不在大陆地区，所以电信网会很卡，移动和联通似乎很流畅。也可以通过下方的新浪视频去观看。请使用谷歌内核或者ie11以上的浏览器，不然网页可能不正常。"
+                                type="success">
+                        </el-alert>
+                        <h4 style="height: 21px">{{videoPath}}</h4>
+                        <% if(userInfo && userInfo.level == 1){ %>
+                            <el-row>
+                                <el-col :span="24">
+                                    <el-table
+                                            :data="editVideoNode"
+                                            height="400"
+                                            style="width: 100%">
+                                        <el-table-column
+                                                prop="id"
+                                                label="id">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="pid"
+                                                label="pid">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="label"
+                                                label="label">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="isLeaf"
+                                                label="isLeaf">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="orderNo"
+                                                label="orderNo">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="src"
+                                                label="src">
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="操作">
+                                            <template slot-scope="scope">
+                                                <el-button type="text" size="small" @click="clickEditNode(scope)">查看
+                                                </el-button>
+                                                <el-button type="text" size="small">删除</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="24">
+                                    <el-button type="success" round @click="createNewVideoNode">创建新节点</el-button>
+                                    <el-form ref="editVideoNodeFrom" :model="editNode" label-width="160px"
+                                             v-if="editNode!=null"
+                                             :label-position="'left'">
+                                        <el-form-item label="名称">
+                                            <el-input v-model="editNode.label"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="路径">
+                                            <el-input v-model="editNode.src"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="序号">
+                                            <el-input v-model.Number="editNode.orderNo"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="是否是叶子节点">
+                                            <el-switch v-model="editNode.leaf"></el-switch>
+                                        </el-form-item>
+                                        <el-form-item>
+                                            <el-button type="primary" @click="saveVideoNode">保存</el-button>
+                                            <el-button @click="editNode=null">取消</el-button>
+                                        </el-form-item>
+                                    </el-form>
+                                </el-col>
+                            </el-row>
+                        <% } %>
+                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">
+                            <source :src="videoUrl" type="video/mp4">
+                        </video>
+                        <el-button type="danger" round @click="gotoXL" :disabled="activeVideoNode.data.src==''"
+                                   v-if="activeVideoNode!=null&&activeVideoNode.data.leaf==1">新浪视频
+                        </el-button>
+                    </el-col>
+                </el-row>
+            </div>
             <!--卡面图鉴-->
-            <template v-if="activeNav=='2-1'">
-                <el-row>
-                    <el-col :span="24">
-                        <el-form ref="cards" :model="cardsForm">
-                            <el-form-item label="角色">
-                                <el-checkbox-group v-model="cardsForm.character">
-                                    <el-checkbox :label="item.title" name="character"
-                                                 v-for="(item,index) in character"></el-checkbox>
-                                </el-checkbox-group>
-                            </el-form-item>
-                            <el-form-item label="稀有度">
-                                <el-checkbox-group v-model="cardsForm.rate">
-                                    <el-checkbox label="UR" name="rate"></el-checkbox>
-                                    <el-checkbox label="SSR" name="rate"></el-checkbox>
-                                    <el-checkbox label="MR" name="rate"></el-checkbox>
-                                    <el-checkbox label="SR" name="rate"></el-checkbox>
-                                    <el-checkbox label="R" name="rate"></el-checkbox>
-                                </el-checkbox-group>
-                            </el-form-item>
-                            <el-form-item label="属性">
-                                <el-checkbox-group v-model="cardsForm.color">
-                                    <el-checkbox label="赤" name="color"></el-checkbox>
-                                    <el-checkbox label="青" name="color"></el-checkbox>
-                                    <el-checkbox label="绿" name="color"></el-checkbox>
-                                    <el-checkbox label="黄" name="color"></el-checkbox>
-                                    <el-checkbox label="紫" name="color"></el-checkbox>
-                                </el-checkbox-group>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="getCards(1)">搜 索</el-button>
-                            </el-form-item>
-                        </el-form>
-                    </el-col>
-                </el-row>
-
-                <el-row>
-                    <el-col :xs="12" :sm="12" :md="6" v-for="(item,index) in cardList" style="padding: 10px 10px">
-                        <el-card class="box-card">
-                            <div slot="header" class="clearfix">
-                                <h4 style="margin: 0">{{item.title}}</h4>
-                                <span style="display: flex;flex-direction: row;justify-content:space-between ">
+            <div v-show="activeNav=='2-1'">
+                <div v-show="!isCardEdit">
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form ref="cards" :model="cardsForm">
+                                <el-form-item label="角色">
+                                    <el-checkbox-group v-model="cardsForm.character">
+                                        <el-checkbox :label="item.title" name="character"
+                                                     v-for="(item,index) in character"></el-checkbox>
+                                    </el-checkbox-group>
+                                </el-form-item>
+                                <el-form-item label="稀有度">
+                                    <el-checkbox-group v-model="cardsForm.rate">
+                                        <el-checkbox label="UR" name="rate"></el-checkbox>
+                                        <el-checkbox label="SSR" name="rate"></el-checkbox>
+                                        <el-checkbox label="MR" name="rate"></el-checkbox>
+                                        <el-checkbox label="SR" name="rate"></el-checkbox>
+                                        <el-checkbox label="R" name="rate"></el-checkbox>
+                                    </el-checkbox-group>
+                                </el-form-item>
+                                <el-form-item label="属性">
+                                    <el-checkbox-group v-model="cardsForm.color">
+                                        <el-checkbox label="赤" name="color"></el-checkbox>
+                                        <el-checkbox label="青" name="color"></el-checkbox>
+                                        <el-checkbox label="绿" name="color"></el-checkbox>
+                                        <el-checkbox label="黄" name="color"></el-checkbox>
+                                        <el-checkbox label="紫" name="color"></el-checkbox>
+                                    </el-checkbox-group>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="getCards(1)">搜 索</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :xs="12" :sm="12" :md="6" :xl="4" v-for="(item,index) in cardList"
+                                style="padding: 10px 10px">
+                            <el-card class="box-card">
+                                <div slot="header" class="clearfix">
+                                    <h4 style="margin: 0">{{item.title}}</h4>
+                                    <span style="display: flex;flex-direction: row;justify-content:space-between ">
                                     {{item.character}}·{{item.rate}}·{{item.color}}
-                                    <el-button style="padding: 3px 0" type="text">查看</el-button>
+                                    <el-button style="padding: 3px 0" type="text"
+                                               @click="toCardInfo(item)">查看</el-button>
                                 </span>
-                            </div>
-                            <el-image v-show="item.open==0" :src="getCardPath(1,item.beforeImgName)"
-                                      :fit="'contain'"></el-image>
-                            <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
-                                      :fit="'contain'"></el-image>
-                            <div style="height: 20px;display: flex;flex-direction: row;justify-content:space-between">
-                                <el-switch v-if="item.afterImgName!=null&&item.afterImgName!=''"
-                                           :value="item.open==1"
-                                           @input="item.open==1?item.open=0:item.open=1"
-                                           active-color="#13ce66">
-                                </el-switch>
-                                <el-link type="success" :href="getCardPath(2,item.open==1?item.afterImgName:item.beforeImgName)" download>下载原图</el-link>
-                            </div>
-                        </el-card>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="24" style="display: flex;flex-direction: row;justify-content:space-between ">
-                        <el-pagination
-                                background
-                                :current-page.sync="cardsPageNo"
-                                :hide-on-single-page="true"
-                                @current-change="cardsPageChange"
-                                :page-size="cardsPageSize"
-                                layout="total,prev, pager, next,jumper"
-                                :total="cardsTotal">
-                        </el-pagination>
+                                </div>
+                                <el-image v-show="item.open==0" :src="getCardPath(1,item.beforeImgName)"
+                                          :fit="'contain'"></el-image>
+                                <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
+                                          :fit="'contain'"></el-image>
+                                <div style="height: 20px;display: flex;flex-direction: row;justify-content:space-between">
+                                    <el-switch v-if="item.afterImgName!=null&&item.afterImgName!=''"
+                                               :value="item.open==1"
+                                               @input="item.open==1?item.open=0:item.open=1"
+                                               active-color="#13ce66">
+                                    </el-switch>
+                                    <el-link type="success"
+                                             :href="getCardPath(2,item.open==1?item.afterImgName:item.beforeImgName)"
+                                             target="_blank"
+                                             download>下载原图
+                                    </el-link>
+                                </div>
+                            </el-card>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24" style="display: flex;flex-direction: row;justify-content:space-between ">
+                            <el-pagination
+                                    background
+                                    :current-page.sync="cardsPageNo"
+                                    :hide-on-single-page="true"
+                                    @current-change="cardsPageChange"
+                                    :page-size="cardsPageSize"
+                                    layout="total,prev, pager, next,jumper"
+                                    :total="cardsTotal">
+                            </el-pagination>
 
-                    </el-col>
-                </el-row>
-            </template>
+                        </el-col>
+                    </el-row>
+                </div>
+                <div v-show="isCardEdit">
 
+                </div>
+            </div>
         </el-main>
     </el-container>
+    <div v-loading.fullscreen.lock="loading">
 
+
+    </div>
     <el-dialog title="登录" :visible.sync="dialogLoginVisible" :width="'600px'">
         <el-form :model="loginForm" :label-position="'left'">
             <el-form-item label="用户名" :label-width="'100px'">
