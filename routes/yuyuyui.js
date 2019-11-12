@@ -203,7 +203,7 @@ router.get('/getdanmu', function (req, res) {
     //将arg参数字符串反序列化为一个对象
     var params = querystring.parse(arg);
 
-    res.send(req.id)
+    res.send(params.id)
 })
 router.post('/getdanmu/', function (req, res) {
     res.send(JSON.stringify(req.body))
