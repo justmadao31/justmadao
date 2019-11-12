@@ -197,7 +197,13 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
 });
 
 router.get('/getdanmu', function (req, res) {
-    res.send(1)
+    //获取返回的url对象的query属性值
+    var arg = url.parse(req.url).query;
+
+    //将arg参数字符串反序列化为一个对象
+    var params = querystring.parse(arg);
+
+    res.send(req.id)
 })
 router.post('/getdanmu/', function (req, res) {
     res.send(JSON.stringify(req.body))
