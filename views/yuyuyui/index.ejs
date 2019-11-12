@@ -144,9 +144,10 @@
                                 </el-col>
                             </el-row>
                         <% } %>
-                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">
-                            <source :src="videoUrl" type="video/mp4">
-                        </video>
+                        <div id="dplayer"></div>
+<!--                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">-->
+<!--                            <source :src="videoUrl" type="video/mp4">-->
+<!--                        </video>-->
                         <el-button type="danger" round @click="gotoXL" :disabled="activeVideoNode.data.src==''"
                                    v-if="activeVideoNode!=null&&activeVideoNode.data.leaf==1">新浪视频
                         </el-button>

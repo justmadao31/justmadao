@@ -119,7 +119,7 @@ var vueApp = new Vue({
             {
                 content: '图鉴完成了查看详情',
                 timestamp: '2019-11-10'
-            },{
+            }, {
                 content: '关于本站里添加了收款码，欢迎支持',
                 timestamp: '2019-11-10'
             },
@@ -148,6 +148,7 @@ var vueApp = new Vue({
             children: 'children',
             isLeaf: 'leaf'
         },
+        dp: null,
         dialogLoginVisible: false,
         editNode: null,
         //卡面图鉴
@@ -199,11 +200,24 @@ var vueApp = new Vue({
             this.activeVideoNode = node
             if (data.isLeaf) {
                 this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
-
-                this.$nextTick(function () {
-                    this.$refs['video'].load()
-                })
+                this.dpInit()
+                // this.$nextTick(function () {
+                //     this.$refs['video'].load()
+                // })
             }
+        },
+        dpInit: function () {
+            this.dp = new DPlayer({
+                container: document.getElementById('dplayer'),
+                video: {
+                    url: this.videoUrl,
+                },
+                danmaku:{
+                    id: '111',
+                    api: '/yuyuyui/getdanmu/',
+                    addition:[]
+                }
+            });
         },
         loadNode(node, resolve) {
             if (node.level == 0) {
@@ -435,11 +449,11 @@ var vueApp = new Vue({
             }
 
             if (this.$refs['video']) {
-                if (newValue != '4') {
-                    this.$refs['video'].pause()
-                } else {
-                    this.$refs['video'].play()
-                }
+                // if (newValue != '4') {
+                //     this.$refs['video'].pause()
+                // } else {
+                //     this.$refs['video'].play()
+                // }
             }
 
         }
