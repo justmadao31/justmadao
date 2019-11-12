@@ -7,6 +7,9 @@ var fs = require('fs');
 var multer = require('multer')
 var upload = multer({dest: 'public/images/'});
 var gm = require('gm')
+var http = require('http');
+var url = require("url");
+var querystring = require("querystring");
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('yuyuyui/index', {title: '闪光的花结', userInfo: req.session.userInfo});
@@ -192,5 +195,12 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
     })
 
 });
+
+router.get('/getdanmu', function (req, res) {
+    res.send(1)
+})
+router.post('/getdanmu/', function (req, res) {
+    res.send(JSON.stringify(req.body))
+})
 
 module.exports = router;

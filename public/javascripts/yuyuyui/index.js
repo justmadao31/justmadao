@@ -212,10 +212,11 @@ var vueApp = new Vue({
                 video: {
                     url: this.videoUrl,
                 },
-                danmaku:{
-                    id: '111',
+                danmaku: {
+                    id: 27840775,
+                    user: 'justmadao',
                     api: '/yuyuyui/getdanmu/',
-                    addition:[]
+                    addition: []
                 }
             });
         },
