@@ -45,12 +45,12 @@ router.post('/getVideoTreeNode', function (req, res) {
 router.post('/saveVideoNode', function (req, res) {
     res.status(200);
     var data = {}
-    var list = [req.body.pid, req.body.label, req.body.isLeaf, req.body.src, req.body.size, req.body.orderNo, req.body.id]
+    var list = [req.body.pid, req.body.label, req.body.isLeaf, req.body.src, req.body.size, req.body.orderNo, req.body.cid, req.body.id]
     let sql = ''
     if (req.body.id == null) {
-        sql = 'insert into videoTree (pid,label,isLeaf,src,size,orderNo) values (?,?,?,?,?,?)'
+        sql = 'insert into videoTree (pid,label,isLeaf,src,size,orderNo,cid) values (?,?,?,?,?,?,?)'
     } else {
-        sql = 'update videoTree set pid=?,label=?,isLeaf=?,src=?,size=?,orderNo=? where id=?'
+        sql = 'update videoTree set pid=?,label=?,isLeaf=?,src=?,size=?,orderNo=?,cid=? where id=?'
     }
 
     pf.dbQuery(sql, list)
@@ -207,6 +207,13 @@ router.get('/getdanmu', function (req, res) {
 })
 router.post('/getdanmu/', function (req, res) {
     res.send(JSON.stringify(req.body))
+})
+router.get('/getBiliBilidanmu', function (req, res) {
+    var arg = url.parse(req.url).query;
+    var params = querystring.parse(arg);
+
+
+    res.send(params.cid)
 })
 
 module.exports = router;
