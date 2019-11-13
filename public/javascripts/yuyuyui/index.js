@@ -117,6 +117,10 @@ var vueApp = new Vue({
         ],
         timeline: [
             {
+                content: '更换了播放器，增加了PayPal主页，欢迎支持',
+                timestamp: '2019-11-13'
+            },
+            {
                 content: '图鉴完成了查看详情',
                 timestamp: '2019-11-10'
             }, {
