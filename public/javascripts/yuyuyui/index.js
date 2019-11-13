@@ -449,12 +449,12 @@ var vueApp = new Vue({
                 this.activeNav = oldValue
             }
 
-            if (this.$refs['video']) {
-                // if (newValue != '4') {
-                //     this.$refs['video'].pause()
-                // } else {
-                //     this.$refs['video'].play()
-                // }
+            if (this.dp) {
+                if (newValue != '4') {
+                    this.dp.pause()
+                } else {
+                    this.dp.play()
+                }
             }
 
         }
