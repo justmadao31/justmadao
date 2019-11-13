@@ -213,10 +213,10 @@ var vueApp = new Vue({
                     url: this.videoUrl,
                 },
                 danmaku: {
-                    id: this.activeVideoNode.id,
+                    id: this.activeVideoNode.data.id,
                     user: 'justmadao',
                     api: '/yuyuyui/getdanmu/',
-                    addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.cid]
+                    addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.data.cid]
                 }
             });
         },
