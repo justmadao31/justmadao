@@ -12,6 +12,7 @@ var url = require("url");
 var querystring = require("querystring");
 var zlib = require('zlib');
 const xml2js = require('xml2js');
+const path = require('path');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('yuyuyui/index', {title: '闪光的花结', userInfo: req.session.userInfo});
@@ -30,16 +31,16 @@ router.post('/getVideoTreeNode', function (req, res) {
     let sql = 'select * from videoTree where pid=? order by orderNo'
 
     pf.dbQuery(sql, [req.body.pid])
-        .catch(err => {
-            data.status = 0
-            res.end(JSON.stringify(data));
-        })
         .then(result => {
             result.forEach(function (v, i) {
                 v.leaf = v.isLeaf == 1
             })
             data.status = 1
             data.result = result
+            res.end(JSON.stringify(data));
+        })
+        .catch(err => {
+            data.status = 0
             res.end(JSON.stringify(data));
         })
 })
@@ -56,15 +57,16 @@ router.post('/saveVideoNode', function (req, res) {
     }
 
     pf.dbQuery(sql, list)
-        .catch(err => {
-            data.status = 0
-            res.end(JSON.stringify(data));
-        })
         .then(result => {
             data.status = 1
             data.result = result
             res.end(JSON.stringify(data));
         })
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+
 })
 
 router.post('/getCards', function (req, res) {
@@ -113,10 +115,6 @@ router.post('/getCards', function (req, res) {
     sql2 += ' order by id DESC limit ?,?'
 
     pf.dbQuery(sql, list)
-        .catch(err => {
-            data.status = 0
-            res.end(JSON.stringify(data));
-        })
         .then(result => {
             console.log(result)
             data.status = 1
@@ -131,6 +129,11 @@ router.post('/getCards', function (req, res) {
             data.result = result
             res.end(JSON.stringify(data));
         })
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+
 })
 
 router.post('/getCardById', function (req, res) {
@@ -139,14 +142,15 @@ router.post('/getCardById', function (req, res) {
 
     var sql = 'select * from cards where id=?'
     pf.dbQuery(sql, [req.body.id])
-        .catch(err => {
-            data.status = 0
-            res.end(JSON.stringify(data));
-        })
         .then(result => {
             data.result = result
             res.end(JSON.stringify(data));
         })
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+
 })
 
 router.post('/saveCard', function (req, res) {
@@ -168,15 +172,16 @@ router.post('/saveCard', function (req, res) {
     }
 
     pf.dbQuery(sql, list)
-        .catch(err => {
-            data.status = 0
-            res.end(JSON.stringify(data));
-        })
         .then(result => {
             data.status = 1
             data.result = result
             res.end(JSON.stringify(data));
         })
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+
 })
 
 router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
@@ -218,11 +223,14 @@ router.get('/getBiliBilidanmu', function (req, res1) {
     if (params.cid == 0) {
         res1.send('0')
     } else {
-        var biliUrl = 'https://api.bilibili.com/x/v1/dm/list.so?oid=' + params.cid
-
-        pf.httpGet(biliUrl)
+        pf.fsRead(path.join(__dirname, "../public/danmu/" + params.cid + '.json'))
+            .then(data => {
+                console.log('读取弹幕文件')
+                res1.send(data)
+            })
             .catch(() => {
-                res1.send('0')
+                var biliUrl = 'https://api.bilibili.com/x/v1/dm/list.so?oid=' + params.cid
+                return pf.httpGet(biliUrl)
             })
             .then(res => {
                 var chunks = []
@@ -235,9 +243,6 @@ router.get('/getBiliBilidanmu', function (req, res1) {
                         res1.send('0')
                     } else {
                         pf.zlibInflateRaw(buffer)
-                            .catch(() => {
-                                res1.send('0')
-                            })
                             .then(decoded => pf.xmlToJson(decoded.toString()))
                             .catch(() => {
                                 res1.send('0')
@@ -248,11 +253,25 @@ router.get('/getBiliBilidanmu', function (req, res1) {
                                     var t = v.$.p.split(',')
                                     list.push([t[0], t[1], parseInt(t[3]), t[6], v._])
                                 })
-                                res1.send({code: 0, data: list})
+                                var data = {code: 0, data: list}
+                                res1.send(data)
+                                pf.fsWrite(path.join(__dirname, "../public/danmu/" + params.cid + '.json'), JSON.stringify(data))
+                                    .then(() => {
+
+                                    })
+                                    .catch(() => {
+
+                                    })
+                            })
+                            .catch(() => {
+                                res1.send('0')
                             })
                     }
 
                 })
+            })
+            .catch(() => {
+                res1.send('0')
             })
     }
 })

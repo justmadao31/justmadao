@@ -5,6 +5,7 @@ var querystring = require("querystring");
 var zlib = require('zlib');
 const xml2js = require('xml2js');
 const dbConfig = require('../util/mysqlConnect')
+const fs = require('fs')
 module.exports = {
     dbQuery: function (sql, list) {
         let connection = mysql.createConnection(dbConfig)
@@ -29,7 +30,7 @@ module.exports = {
                 resolve(res)
             }).on('error', () => {
                 console.log('获取弹幕出错!')
-                reject
+                reject()
             })
         })
     },
@@ -38,7 +39,7 @@ module.exports = {
             zlib.inflateRaw(buff, function (error, decoded) {
                 if (error) {
                     console.log(error)
-                    reject
+                    reject()
                 } else {
                     resolve(decoded)
                 }
@@ -50,12 +51,39 @@ module.exports = {
             xml2js.parseString(str, function (err, result) {
                 if (err) {
                     console.log(err)
-                    reject
+                    reject()
                 } else {
                     resolve(result)
                 }
 
             })
+        })
+    },
+    fsWrite: function (path, str) {
+        console.log(path)
+        return new Promise(function (resolve, reject) {
+            fs.writeFile(path, str, 'utf-8', function (err) {
+                if (err) {
+                    console.log('写入弹幕失败')
+                    console.log(err)
+                    reject()
+                } else {
+                    console.log('写入弹幕成功')
+                    resolve()
+                }
+            })
+        })
+    },
+    fsRead: function (path) {
+        return new Promise(function (resolve, reject) {
+            fs.readFile(path, function (err, data) {
+                if (err) {
+                    console.log('读取弹幕文件失败');
+                    reject()
+                } else {
+                    resolve(data.toString())
+                }
+            });
         })
     }
 }

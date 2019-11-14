@@ -51,12 +51,8 @@ app.post('/login', function (req, res) {
     }
     let sql = 'select id,name,level,email from user where name=? and password=?'
 
-    pf.dbQuery(sql,[req.body.username, req.body.password])
-        .catch(err=>{
-            data.status = 0
-            res.end(JSON.stringify(data));
-        })
-        .then(result=>{
+    pf.dbQuery(sql, [req.body.username, req.body.password])
+        .then(result => {
             if (result.length == 0) {
                 data.status = 0
                 data.message = '用户名或密码错误'
@@ -68,6 +64,11 @@ app.post('/login', function (req, res) {
 
             res.end(JSON.stringify(data));
         })
+        .catch(err => {
+            data.status = 0
+            res.end(JSON.stringify(data));
+        })
+
 })
 
 // catch 404 and forward to error handler
