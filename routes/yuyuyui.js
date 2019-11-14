@@ -60,7 +60,9 @@ router.post('/saveVideoNode', function (req, res) {
         .then(result => {
             data.status = 1
             data.result = result
-            pf.saveNews('更新剧情视频：' + req.body.path + '/' + req.body.label, req.body.img)
+            if (req.body.id == null && req.body.isLeaf == 1) {
+                pf.saveNews('更新剧情视频：' + req.body.path + '/' + req.body.label, req.body.img)
+            }
             res.end(JSON.stringify(data));
         })
         .catch(err => {
@@ -175,7 +177,11 @@ router.post('/saveCard', function (req, res) {
         .then(result => {
             data.status = 1
             data.result = result
-            pf.saveNews('增加图鉴：' + req.body.title + '·' + req.body.character, req.body.beforeImgName.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg'))
+
+            if (req.body.id == null) {
+                pf.saveNews('增加图鉴：' + req.body.title + '·' + req.body.character, req.body.beforeImgName.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg'))
+            }
+
             res.end(JSON.stringify(data));
         })
         .catch(err => {
