@@ -7,9 +7,11 @@ var fs = require('fs');
 var multer = require('multer')
 var upload = multer({dest: 'public/images/'});
 var gm = require('gm')
-var http = require('http');
+var http = require('https');
 var url = require("url");
 var querystring = require("querystring");
+var zlib = require('zlib');
+const xml2js = require('xml2js');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('yuyuyui/index', {title: '闪光的花结', userInfo: req.session.userInfo});
@@ -208,12 +210,55 @@ router.get('/getdanmu', function (req, res) {
 router.post('/getdanmu/', function (req, res) {
     res.send(JSON.stringify(req.body))
 })
-router.get('/getBiliBilidanmu', function (req, res) {
+
+router.get('/getBiliBilidanmu', function (req, res1) {
+
     var arg = url.parse(req.url).query;
     var params = querystring.parse(arg);
+    if (params.cid == 0) {
+        res1.send('0')
+    } else {
+        var biliUrl = 'https://api.bilibili.com/x/v1/dm/list.so?oid=' + params.cid
+        http.get(biliUrl, (res) => {
+            var chunks = []
+            res.on('data', (chunk) => {
+                chunks.push(chunk);
+            });
+            res.on('end', function () {
+                var buffer = Buffer.concat(chunks);
+                if (buffer.toString().search('<!DOCTYPE HTML') == 0) {
+                    res1.send('0')
+                } else {
+                    zlib.inflateRaw(buffer, function (err, decoded) {
+                            if (err) {
+                                console.log(err)
+                                res1.send('0')
+                            } else {
+                                xml2js.parseString(decoded.toString(), function (err, result) {
+                                    if (err) {
+                                        console.log(err)
+                                        res1.send('0')
+                                    } else {
+                                        var list = []
+                                        result.i.d.forEach(function (v) {
+                                            var t = v.$.p.split(',')
+                                            list.push([t[0], t[1], parseInt(t[3]), t[6], v._])
+                                        })
+                                        res1.send({code: 0, data: list})
+                                    }
 
+                                })
+                            }
+                        }
+                    )
+                }
 
-    res.send(params.cid)
+            })
+        }).on('error', () => {
+                console.log('获取数据出错!')
+                res1.send('0')
+            }
+        );
+    }
 })
-
 module.exports = router;

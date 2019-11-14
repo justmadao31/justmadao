@@ -205,9 +205,6 @@ var vueApp = new Vue({
             if (data.isLeaf) {
                 this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
                 this.dpInit()
-                // this.$nextTick(function () {
-                //     this.$refs['video'].load()
-                // })
             }
         },
         dpInit: function () {
