@@ -117,6 +117,10 @@ var vueApp = new Vue({
         ],
         timeline: [
             {
+                content: '增加了首页更新信息，现在可以拉取b站的弹幕了',
+                timestamp: '2019-11-14'
+            },
+            {
                 content: '更换了播放器，增加了PayPal主页，欢迎支持',
                 timestamp: '2019-11-13'
             },
@@ -144,6 +148,7 @@ var vueApp = new Vue({
                 timestamp: '2019-11'
             }
         ],
+        newsList: [],
         //剧情视频
         activeVideoNode: null,
         videoUrl: null,
@@ -199,6 +204,12 @@ var vueApp = new Vue({
                     console.log(error);
                 });
         },
+        getNews: function () {
+            this.$axios.post('/yuyuyui/getNews')
+                .then(res => {
+                    this.newsList = res.data.result
+                })
+        },
         //视频剧情
         videoTreeClick(data, node) {
             this.activeVideoNode = node
@@ -208,18 +219,30 @@ var vueApp = new Vue({
             }
         },
         dpInit: function () {
-            this.dp = new DPlayer({
-                container: document.getElementById('dplayer'),
-                video: {
-                    url: this.videoUrl,
-                },
-                danmaku: {
-                    id: this.activeVideoNode.data.id,
-                    user: 'justmadao',
-                    api: '/yuyuyui/getdanmu/',
-                    addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.data.cid]
-                }
-            });
+            if (this.dp) {
+                this.dp.switchVideo({
+                        url: this.videoUrl,
+                    },
+                    {
+                        id: this.activeVideoNode.data.id,
+                        api: '/yuyuyui/getdanmu/',
+                        user: 'justmadao',
+                        addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.data.cid]
+                    })
+            } else {
+                this.dp = new DPlayer({
+                    container: document.getElementById('dplayer'),
+                    video: {
+                        url: this.videoUrl,
+                    },
+                    danmaku: {
+                        id: this.activeVideoNode.data.id,
+                        user: 'justmadao',
+                        api: '/yuyuyui/getdanmu/',
+                        addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.data.cid]
+                    }
+                });
+            }
         },
         loadNode(node, resolve) {
             if (node.level == 0) {
@@ -264,6 +287,7 @@ var vueApp = new Vue({
         },
         saveVideoNode: function () {
             this.editNode.isLeaf = this.editNode.leaf ? 1 : 0
+            this.editNode.path = this.videoPath
             //console.log(this.editNode)
             this.$axios.post('/yuyuyui/saveVideoNode', this.editNode)
                 .then(response => {
@@ -288,6 +312,7 @@ var vueApp = new Vue({
                 src: '',
                 size: 0,
                 cid: 0,
+                img: '',
                 isLeaf: 0
             }
         },
@@ -481,5 +506,7 @@ var vueApp = new Vue({
             // 对响应错误做点什么
             return Promise.reject(error);
         });
+
+        this.getNews()
     }
 })

@@ -48,25 +48,25 @@ router.post('/getVideoTreeNode', function (req, res) {
 router.post('/saveVideoNode', function (req, res) {
     res.status(200);
     var data = {}
-    var list = [req.body.pid, req.body.label, req.body.isLeaf, req.body.src, req.body.size, req.body.orderNo, req.body.cid, req.body.id]
+    var list = [req.body.pid, req.body.label, req.body.isLeaf, req.body.src, req.body.size, req.body.orderNo, req.body.cid, req.body.img, req.body.id]
     let sql = ''
     if (req.body.id == null) {
-        sql = 'insert into videoTree (pid,label,isLeaf,src,size,orderNo,cid) values (?,?,?,?,?,?,?)'
+        sql = 'insert into videoTree (pid,label,isLeaf,src,size,orderNo,cid,img) values (?,?,?,?,?,?,?,?)'
     } else {
-        sql = 'update videoTree set pid=?,label=?,isLeaf=?,src=?,size=?,orderNo=?,cid=? where id=?'
+        sql = 'update videoTree set pid=?,label=?,isLeaf=?,src=?,size=?,orderNo=?,cid=?,img=? where id=?'
     }
 
     pf.dbQuery(sql, list)
         .then(result => {
             data.status = 1
             data.result = result
+            pf.saveNews('更新剧情视频：' + req.body.path + '/' + req.body.label, req.body.img)
             res.end(JSON.stringify(data));
         })
         .catch(err => {
             data.status = 0
             res.end(JSON.stringify(data));
         })
-
 })
 
 router.post('/getCards', function (req, res) {
@@ -175,6 +175,7 @@ router.post('/saveCard', function (req, res) {
         .then(result => {
             data.status = 1
             data.result = result
+            pf.saveNews('增加图鉴：' + req.body.title + '·' + req.body.character, req.body.beforeImgName.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg'))
             res.end(JSON.stringify(data));
         })
         .catch(err => {
@@ -203,6 +204,22 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
 
 });
 
+router.post('/getNews', function (req, res) {
+    res.status(200);
+    var data = {}
+    var sql = 'select * from news order by id DESC limit 0,6'
+    pf.dbQuery(sql, null)
+        .then(result => {
+            data.status = 1
+            data.result = result
+            res.send(data)
+        })
+        .catch(() => {
+            data.status = 0
+            res.send(data)
+        })
+})
+
 router.get('/getdanmu', function (req, res) {
     //获取返回的url对象的query属性值
     var arg = url.parse(req.url).query;
@@ -210,7 +227,8 @@ router.get('/getdanmu', function (req, res) {
     //将arg参数字符串反序列化为一个对象
     var params = querystring.parse(arg);
 
-    res.send(params.id)
+
+    res.send({code: 0, data: []})
 })
 router.post('/getdanmu/', function (req, res) {
     res.send(JSON.stringify(req.body))
@@ -221,7 +239,7 @@ router.get('/getBiliBilidanmu', function (req, res1) {
     var arg = url.parse(req.url).query;
     var params = querystring.parse(arg);
     if (params.cid == 0) {
-        res1.send('0')
+        res1.send({code: 0, data: []})
     } else {
         pf.fsRead(path.join(__dirname, "../public/danmu/" + params.cid + '.json'))
             .then(data => {
@@ -240,12 +258,12 @@ router.get('/getBiliBilidanmu', function (req, res1) {
                 res.on('end', function () {
                     var buffer = Buffer.concat(chunks);
                     if (buffer.toString().search('<!DOCTYPE HTML') == 0) {
-                        res1.send('0')
+                        res1.send({code: 0, data: []})
                     } else {
                         pf.zlibInflateRaw(buffer)
                             .then(decoded => pf.xmlToJson(decoded.toString()))
                             .catch(() => {
-                                res1.send('0')
+                                res1.send({code: 0, data: []})
                             })
                             .then(result => {
                                 var list = []
@@ -264,14 +282,14 @@ router.get('/getBiliBilidanmu', function (req, res1) {
                                     })
                             })
                             .catch(() => {
-                                res1.send('0')
+                                res1.send({code: 0, data: []})
                             })
                     }
 
                 })
             })
             .catch(() => {
-                res1.send('0')
+                res1.send({code: 0, data: []})
             })
     }
 })

@@ -85,5 +85,9 @@ module.exports = {
                 }
             });
         })
+    },
+    saveNews: function (str, img) {
+        var sql = 'insert into news (title,image) values (?,?);'
+        return this.dbQuery(sql, [str, img])
     }
 }
