@@ -219,46 +219,41 @@ router.get('/getBiliBilidanmu', function (req, res1) {
         res1.send('0')
     } else {
         var biliUrl = 'https://api.bilibili.com/x/v1/dm/list.so?oid=' + params.cid
-        http.get(biliUrl, (res) => {
-            var chunks = []
-            res.on('data', (chunk) => {
-                chunks.push(chunk);
-            });
-            res.on('end', function () {
-                var buffer = Buffer.concat(chunks);
-                if (buffer.toString().search('<!DOCTYPE HTML') == 0) {
-                    res1.send('0')
-                } else {
-                    zlib.inflateRaw(buffer, function (err, decoded) {
-                            if (err) {
-                                console.log(err)
-                                res1.send('0')
-                            } else {
-                                xml2js.parseString(decoded.toString(), function (err, result) {
-                                    if (err) {
-                                        console.log(err)
-                                        res1.send('0')
-                                    } else {
-                                        var list = []
-                                        result.i.d.forEach(function (v) {
-                                            var t = v.$.p.split(',')
-                                            list.push([t[0], t[1], parseInt(t[3]), t[6], v._])
-                                        })
-                                        res1.send({code: 0, data: list})
-                                    }
 
-                                })
-                            }
-                        }
-                    )
-                }
-
-            })
-        }).on('error', () => {
-                console.log('获取数据出错!')
+        pf.httpGet(biliUrl)
+            .catch(() => {
                 res1.send('0')
-            }
-        );
+            })
+            .then(res => {
+                var chunks = []
+                res.on('data', (chunk) => {
+                    chunks.push(chunk);
+                });
+                res.on('end', function () {
+                    var buffer = Buffer.concat(chunks);
+                    if (buffer.toString().search('<!DOCTYPE HTML') == 0) {
+                        res1.send('0')
+                    } else {
+                        pf.zlibInflateRaw(buffer)
+                            .catch(() => {
+                                res1.send('0')
+                            })
+                            .then(decoded => pf.xmlToJson(decoded.toString()))
+                            .catch(() => {
+                                res1.send('0')
+                            })
+                            .then(result => {
+                                var list = []
+                                result.i.d.forEach(function (v) {
+                                    var t = v.$.p.split(',')
+                                    list.push([t[0], t[1], parseInt(t[3]), t[6], v._])
+                                })
+                                res1.send({code: 0, data: list})
+                            })
+                    }
+
+                })
+            })
     }
 })
 module.exports = router;

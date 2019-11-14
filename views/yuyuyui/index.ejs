@@ -16,6 +16,7 @@
     .el-card__header {
         padding: 10px 15px;
     }
+
     .el-carousel__item h3 {
         color: #475669;
         font-size: 14px;
@@ -67,7 +68,7 @@
             <div v-show="activeNav=='4'">
                 <el-row>
                     <el-col :xs="24" :sm="8" :md="4">
-                        <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" lazy>
+                        <el-tree :load="loadNode" @node-click="videoTreeClick" :props="props" accordion lazy>
                         </el-tree>
                     </el-col>
                     <el-col :xs="24" :sm="16" :md="20">
@@ -148,9 +149,9 @@
                             </el-row>
                         <% } %>
                         <div id="dplayer" style="margin-bottom: 10px"></div>
-<!--                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">-->
-<!--                            <source :src="videoUrl" type="video/mp4">-->
-<!--                        </video>-->
+                        <!--                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">-->
+                        <!--                            <source :src="videoUrl" type="video/mp4">-->
+                        <!--                        </video>-->
                         <el-button type="danger" round @click="gotoXL" :disabled="activeVideoNode.data.src==''"
                                    v-if="activeVideoNode!=null&&activeVideoNode.data.leaf==1">新浪视频
                         </el-button>
@@ -192,7 +193,7 @@
 
                                     <% if(userInfo && userInfo.level == 1){ %>
                                         <el-button type="success" @click="toCardInfo()">新 建</el-button>
-                                    <%}%>
+                                    <% } %>
                                 </el-form-item>
                             </el-form>
                         </el-col>
@@ -229,7 +230,8 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="24" style="display: flex;flex-direction: row-reverse;justify-content:space-between ">
+                        <el-col :span="24"
+                                style="display: flex;flex-direction: row-reverse;justify-content:space-between ">
                             <el-pagination
                                     background
                                     :current-page.sync="cardsPageNo"
@@ -251,27 +253,31 @@
                             <h3>
                                 神花前
                                 <% if(userInfo && userInfo.level == 1){ %>
-                                    <label for="uploadBefore" type="button" class="el-button el-button--primary is-round"><span>上 传</span></label>
+                                    <label for="uploadBefore" type="button"
+                                           class="el-button el-button--primary is-round"><span>上 传</span></label>
                                     <el-button type="warning" round @click="activeCard.beforeImgName=''">删除</el-button>
-                                <%}%>
+                                <% } %>
                             </h3>
                             <form v-show="false">
                                 <input type="file" name="pic" id="uploadBefore" @change="uploadCardImg(1)">
                             </form>
-                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.beforeImgName)" :fit="'fit'" v-if="activeCard.beforeImgName!=''"></el-image>
+                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.beforeImgName)" :fit="'fit'"
+                                      v-if="activeCard.beforeImgName!=''"></el-image>
                         </el-col>
                         <el-col :span="12" style="padding: 10px">
                             <h3>
                                 神花后
                                 <% if(userInfo && userInfo.level == 1){ %>
-                                    <label for="uploadAfter" type="button" class="el-button el-button--primary is-round"><span>上 传</span></label>
+                                    <label for="uploadAfter" type="button"
+                                           class="el-button el-button--primary is-round"><span>上 传</span></label>
                                     <el-button type="warning" round @click="activeCard.afterImgName=''">删除</el-button>
-                                <%}%>
+                                <% } %>
                             </h3>
                             <form v-show="false">
                                 <input type="file" name="pic" id="uploadAfter" @change="uploadCardImg(2)">
                             </form>
-                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.afterImgName)" :fit="'fit'" v-if="activeCard.afterImgName!=''"></el-image>
+                            <el-image style="width: 100%;" :src="getCardPath(2,activeCard.afterImgName)" :fit="'fit'"
+                                      v-if="activeCard.afterImgName!=''"></el-image>
                         </el-col>
                     </el-row>
 
@@ -283,7 +289,8 @@
                                 </el-form-item>
                                 <el-form-item label="角色">
                                     <el-select v-model="activeCard.character" placeholder="">
-                                        <el-option :label="item.title" :value="item.title" v-for="(item,index) in character"></el-option>
+                                        <el-option :label="item.title" :value="item.title"
+                                                   v-for="(item,index) in character"></el-option>
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="属性">
@@ -352,7 +359,7 @@
                                 </el-form-item>
                             </el-form>
                         </el-row>
-                    <%}else{%>
+                    <% }else{ %>
                         <el-row>
                             <el-table
                                     border
@@ -410,8 +417,7 @@
                         <el-row>
                             <div>简评：{{activeCard.description}}</div>
                         </el-row>
-                    <%}%>
-
+                    <% } %>
 
                 </div>
             </div>
@@ -419,7 +425,8 @@
                 <div style="width: 80%;margin: 0 auto">
                     大家好，我是肥皂泡。因为被人用那1p的剧情追着举报，ab站都阵亡了。于是想着自己建个网站吧。就试着做了一个简单的网站放花结视频。但是想着光放花结视频太浪费了，所以加了图鉴，
                     以后有机会的话会试着加点其他的资源或者功能什么的。爱发电也被举报掉了，还是直接发收款码吧，如果愿意的话可以来赞助一下。<br>
-                    海外党愿意支持的可以点这里：<el-link type="primary" href="https://www.paypal.me/justmadao" target="_blank">paypal主页</el-link>
+                    海外党愿意支持的可以点这里：
+                    <el-link type="primary" href="https://www.paypal.me/justmadao" target="_blank">paypal主页</el-link>
                     <div style="max-width:800px;display: flex;flex-direction: row;justify-content: space-between;margin-top: 20px">
                         <el-image style="width: 300px" src="/images/zfb.JPG" :fit="'fit'"></el-image>
                         <el-image style="width: 300px" src="/images/wx.JPG" :fit="'fit'"></el-image>
