@@ -341,9 +341,9 @@ var vueApp = new Vue({
         },
         getCardPath: function (type, path) {
             if (type == 1) {
-                return path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
+                return 'http://justmadao.club' + path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
             } else {
-                return path.replace('yuyuyui', '/images/cards')
+                return 'http://justmadao.club' + path.replace('yuyuyui', '/images/cards')
             }
         },
         toCardInfo: function (card) {

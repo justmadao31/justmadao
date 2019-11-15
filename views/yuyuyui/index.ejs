@@ -202,9 +202,17 @@
                                 </span>
                                 </div>
                                 <el-image v-show="item.open==0" :src="getCardPath(1,item.beforeImgName)"
-                                          :fit="'contain'"></el-image>
+                                          :fit="'contain'">
+                                    <div slot="placeholder" class="image-slot">
+                                        加载中<span class="dot">...</span>
+                                    </div>
+                                </el-image>
                                 <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
-                                          :fit="'contain'"></el-image>
+                                          :fit="'contain'">
+                                    <div slot="placeholder" class="image-slot">
+                                        加载中<span class="dot">...</span>
+                                    </div>
+                                </el-image>
                                 <div style="height: 20px;display: flex;flex-direction: row-reverse;justify-content:space-between">
                                     <el-link type="success"
                                              :href="getCardPath(2,item.open==1?item.afterImgName:item.beforeImgName)"
@@ -253,7 +261,11 @@
                                 <input type="file" name="pic" id="uploadBefore" @change="uploadCardImg(1)">
                             </form>
                             <el-image style="width: 100%;" :src="getCardPath(2,activeCard.beforeImgName)" :fit="'fit'"
-                                      v-if="activeCard.beforeImgName!=''"></el-image>
+                                      v-if="activeCard.beforeImgName!=''">
+                                <div slot="placeholder" class="image-slot">
+                                    加载中<span class="dot">...</span>
+                                </div>
+                            </el-image>
                         </el-col>
                         <el-col :span="12" style="padding: 10px">
                             <h3>
@@ -268,7 +280,11 @@
                                 <input type="file" name="pic" id="uploadAfter" @change="uploadCardImg(2)">
                             </form>
                             <el-image style="width: 100%;" :src="getCardPath(2,activeCard.afterImgName)" :fit="'fit'"
-                                      v-if="activeCard.afterImgName!=''"></el-image>
+                                      v-if="activeCard.afterImgName!=''">
+                                <div slot="placeholder" class="image-slot">
+                                    加载中<span class="dot">...</span>
+                                </div>
+                            </el-image>
                         </el-col>
                     </el-row>
 
