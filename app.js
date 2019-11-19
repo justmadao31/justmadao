@@ -8,12 +8,10 @@ const session = require("express-session");
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const pf = require('./common/promiseFunction')
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var yuyuyuiRouter = require('./routes/yuyuyui');
 var app = express();
-
 app.use(session({
     secret: "keyboard cat",
     resave: false,

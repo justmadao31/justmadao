@@ -3,16 +3,17 @@ const router = express.Router();
 const bodyParser = require('body-parser')
 const pf = require('../common/promiseFunction')
 const session = require("express-session");
-var fs = require('fs');
-var multer = require('multer')
-var upload = multer({dest: 'public/images/'});
-var gm = require('gm')
-var http = require('https');
-var url = require("url");
-var querystring = require("querystring");
-var zlib = require('zlib');
+const fs = require('fs');
+const multer = require('multer')
+const upload = multer({dest: 'public/images/'});
+const gm = require('gm')
+const http = require('https');
+const url = require("url");
+const querystring = require("querystring");
+const zlib = require('zlib');
 const xml2js = require('xml2js');
 const path = require('path');
+const emailUtil = require('../util/EmailUtil');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('yuyuyui/index', {title: '闪光的花结', userInfo: req.session.userInfo});
