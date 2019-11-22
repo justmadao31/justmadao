@@ -7,11 +7,12 @@ const logger = require('morgan');
 const session = require("express-session");
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const md5 = require('md5-node')
 const pf = require('./common/promiseFunction')
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var yuyuyuiRouter = require('./routes/yuyuyui');
-var app = express();
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const yuyuyuiRouter = require('./routes/yuyuyui');
+const app = express();
 app.use(session({
     secret: "keyboard cat",
     resave: false,
@@ -33,7 +34,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/yuyuyui', yuyuyuiRouter);
 
-
 app.post('/login', function (req, res) {
     res.status(200);
     res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');//可以支持的消息首部列表
@@ -49,7 +49,7 @@ app.post('/login', function (req, res) {
     }
     let sql = 'select id,name,level,email from user where name=? and password=?'
 
-    pf.dbQuery(sql, [req.body.username, req.body.password])
+    pf.dbQuery(sql, [req.body.username, md5(req.body.password)])
         .then(result => {
             if (result.length == 0) {
                 data.status = 0
