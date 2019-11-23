@@ -91,6 +91,10 @@ app.post('/sendCode', function (req, res) {
 })
 
 app.post('/sign', function (req, res) {
+    res.status(200);
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');//可以支持的消息首部列表
+    res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');//可以支持的提交方式
+    res.header('Content-Type', 'application/json;charset=utf-8');//响应头中定义的类型
     if (req.session.code != req.body.code) {
         res.send({status: 0, message: '验证码不正确'})
     } else if (req.session.lastCodeTime + 5 * 1000 * 60 > new Date().getTime()) {
