@@ -255,14 +255,14 @@ var vueApp = new Vue({
             this.$axios.post('/sign', this.loginForm)
                 .then(res => {
                     if (res.data.status == 1) {
-                        this.$alert(response.data.message, '成功', {
+                        this.$alert(res.data.message, '成功', {
                             confirmButtonText: '确定',
                             callback: action => {
                                 location.reload()
                             }
                         });
                     } else {
-                        this.$alert(response.data.message, '错误', {
+                        this.$alert(res.data.message, '错误', {
                             confirmButtonText: '确定'
                         });
                     }

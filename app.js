@@ -81,6 +81,8 @@ app.post('/sendCode', function (req, res) {
     req.session.lastCodeTime = new Date().getTime()
     req.session.code = code
 
+    console.log(req.session.lastCodeTime)
+
     emailUtil.sendEmail(req.body.email, str)
         .then(result => {
             res.send({code: 1, message: '已发送验证码，5分钟有效'})
@@ -95,9 +97,10 @@ app.post('/sign', function (req, res) {
     res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type');//可以支持的消息首部列表
     res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');//可以支持的提交方式
     res.header('Content-Type', 'application/json;charset=utf-8');//响应头中定义的类型
+    console.log(req.session.lastCodeTime)
     if (req.session.code != req.body.code) {
         res.send({status: 0, message: '验证码不正确'})
-    } else if (req.session.lastCodeTime + 5 * 1000 * 60 > new Date().getTime()) {
+    } else if (req.session.lastCodeTime + 5 * 1000 * 60 < new Date().getTime()) {
         res.send({status: 0, message: '验证码已过期'})
     } else {
         let sql = 'select * from user where name=? or email=?'
