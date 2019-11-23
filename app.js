@@ -113,8 +113,7 @@ app.post('/sign', function (req, res) {
                     let list = [req.body.username, md5(req.body.password), req.body.email]
                     pf.dbQuery(sql2, list)
                         .then(result => {
-                            let newUser = JSON.parse(JSON.stringify(req.body))
-                            newUser.level = 0
+                            let newUser = {name: req.body.username, level: 0}
                             req.session.userInfo = newUser
                             res.send({status: 1, message: '注册成功'})
                         })
