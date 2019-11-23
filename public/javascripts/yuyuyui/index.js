@@ -276,7 +276,7 @@ var vueApp = new Vue({
                 });
                 return
             }
-            this.$axios.post('/sendCode', {code: this.loginForm.email})
+            this.$axios.post('/sendCode', {email: this.loginForm.email})
                 .then(res => {
                     this.$alert(res.data.message, '确认', {
                         confirmButtonText: '确定'
