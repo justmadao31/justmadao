@@ -6,8 +6,12 @@ var vueApp = new Vue({
         activeNav: '1',
         loginForm: {
             username: '',
-            password: ''
+            password: '',
+            password2: '',
+            email: '',
+            code: ''
         },
+        loginType: 'login',
         loading: false,
         character: [
             {
@@ -179,23 +183,30 @@ var vueApp = new Vue({
             this.activeNav = key
         },
         J_login: function () {
+            if (this.loginForm.username.trim() == '') {
+                this.$alert('用户名不能为空', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            if (this.loginForm.password.trim() == '') {
+                this.$alert('密码不能为空', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+
             this.$axios.post('/login', this.loginForm)
                 .then(response => {
                     if (response.data.status == 1) {
                         location.reload()
                     } else if (response.data.status == 0) {
                         this.$alert(response.data.message, '错误', {
-                            confirmButtonText: '确定',
-                            callback: action => {
-
-                            }
+                            confirmButtonText: '确定'
                         });
                     } else if (response.data.status == 2) {
                         this.$alert(response.data.message, '错误', {
-                            confirmButtonText: '确定',
-                            callback: action => {
-
-                            }
+                            confirmButtonText: '确定'
                         });
                         this.dialogLoginVisible = false
                     }
@@ -203,6 +214,74 @@ var vueApp = new Vue({
                 .catch(function (error) {
                     console.log(error);
                 });
+        },
+        J_sign: function () {
+            if (this.loginForm.username.trim() == '') {
+                this.$alert('用户名不能为空', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            if (this.loginForm.password.trim() == '') {
+                this.$alert('密码不能为空', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/.test(this.loginForm.password)) {
+                this.$alert('密码需要6-12位英文与数字的组合', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            if (this.loginForm.password != this.loginForm.password2) {
+                this.$alert('两次输入的密码不一致', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.loginForm.email)) {
+                this.$alert('邮箱格式不正确', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            if (this.loginForm.code.trim() == '') {
+                this.$alert('验证码不能为空', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            this.$axios.post('/sign', this.loginForm)
+                .then(res => {
+                    if (res.data.status == 1) {
+                        this.$alert(response.data.message, '成功', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                                location.reload()
+                            }
+                        });
+                    } else {
+                        this.$alert(response.data.message, '错误', {
+                            confirmButtonText: '确定'
+                        });
+                    }
+                })
+
+        },
+        sentCode: function () {
+            if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.loginForm.email)) {
+                this.$alert('邮箱格式不正确', '错误', {
+                    confirmButtonText: '确定'
+                });
+                return
+            }
+            this.$axios.post('/sendCode', this.loginForm)
+                .then(res => {
+                    this.$alert(res.data.message, '确认', {
+                        confirmButtonText: '确定'
+                    });
+                })
         },
         getNews: function () {
             this.$axios.post('/yuyuyui/getNews')

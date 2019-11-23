@@ -445,18 +445,51 @@
     <div v-loading.fullscreen.lock="loading">
 
     </div>
-    <el-dialog title="登录" :visible.sync="dialogLoginVisible" :width="'600px'">
-        <el-form :model="loginForm" :label-position="'left'">
-            <el-form-item label="用户名" :label-width="'100px'">
-                <el-input v-model="loginForm.username" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" :label-width="'100px'">
-                <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
-            </el-form-item>
-        </el-form>
+    <el-dialog title="" :visible.sync="dialogLoginVisible" :width="'600px'">
+
+        <el-tabs v-model="loginType">
+            <el-tab-pane label="登陆" name="login">
+                <el-form :model="loginForm" :label-position="'left'">
+                    <el-form-item label="用户名" :label-width="'100px'">
+                        <el-input v-model="loginForm.username" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" :label-width="'100px'">
+                        <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="注册" name="sign">
+                <el-form :model="loginForm" :label-position="'left'">
+                    <el-form-item label="用户名" :label-width="'100px'">
+                        <el-input v-model="loginForm.username" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" :label-width="'100px'">
+                        <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" :label-width="'100px'">
+                        <el-input type="password" v-model="loginForm.password2" autocomplete="off" p="密码需要6-12位英文与数字的组合"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱" :label-width="'100px'">
+                        <el-col :span="16">
+                            <el-input type="password" v-model="loginForm.email" autocomplete="off"></el-input>
+                        </el-col>
+                        <el-col :span="4" :offset="2">
+                            <el-button type="primary" size="mini" round @click="sentCode()">发送验证码</el-button>
+                        </el-col>
+
+                    </el-form-item>
+                    <el-form-item label="验证码" :label-width="'100px'">
+                        <el-input type="password" v-model="loginForm.code" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+        </el-tabs>
+
+
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogLoginVisible = false">取 消</el-button>
-            <el-button type="primary" @click="J_login">登 录</el-button>
+            <el-button type="primary" @click="J_login" v-show="loginType=='login'">登 录</el-button>
+            <el-button type="primary" @click="J_sign" v-show="loginType=='sign'">注 册</el-button>
         </div>
     </el-dialog>
 </div>

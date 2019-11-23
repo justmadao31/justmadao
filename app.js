@@ -8,6 +8,7 @@ const session = require("express-session");
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const md5 = require('md5-node')
+const emailUtil = require('./util/EmailUtil');
 const pf = require('./common/promiseFunction')
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -67,6 +68,58 @@ app.post('/login', function (req, res) {
             res.end(JSON.stringify(data));
         })
 
+})
+
+app.post('/sendCode', function (req, res) {
+    if (req.session.lastCodeTime != null && req.session.lastCodeTime + 1 * 60 * 1000 > new Date().getTime()) {
+        res.send({code: 0, message: '1分钟内不能重复发送验证码'})
+        return
+    }
+    var code = Math.round(Math.random() * 1000000)
+    var str = '<h1>验证码：' + code + '</h1>'
+
+    req.session.lastCodeTime = new Date().getTime()
+    req.session.code = code
+
+    emailUtil.sendEmail(req.body.email, str)
+        .then(result => {
+            res.send({code: 1, message: '已发送验证码，5分钟有效'})
+        })
+        .catch(err => {
+            res.send({code: 0, message: '发送失败请重试'})
+        })
+})
+
+app.post('/sign', function (req, res) {
+    if (req.session.code != req.body.code) {
+        res.send({status: 0, message: '验证码不正确'})
+    } else if (req.session.lastCodeTime + 5 * 1000 * 60 > new Date().getTime()) {
+        res.send({status: 0, message: '验证码已过期'})
+    } else {
+        let sql = 'select * from user where name=? or email=?'
+        pf.dbQuery(sql, [req.body.username, req.body.email])
+            .then(result => {
+                if (result.length != 0) {
+                    res.send({status: 0, message: '用户名或邮箱已经注册'})
+                } else {
+                    let sql2 = 'insert into user (name,password,email,level) values (?,?,?,0)'
+                    let list = [req.body.username, md5(req.body.password), req.body.email]
+                    pf.dbQuery(sql2, list)
+                        .then(result => {
+                            let newUser = JSON.parse(JSON.stringify(req.body))
+                            newUser.level = 0
+                            req.session.userInfo = newUser
+                            res.send({status: 1, message: '注册成功'})
+                        })
+                        .catch(err => {
+                            res.send({status: 0, message: '服务器错误，请稍后重试'})
+                        })
+                }
+            })
+            .catch(err => {
+                res.send({status: 0, message: '服务器错误，请稍后重试'})
+            })
+    }
 })
 
 // catch 404 and forward to error handler
