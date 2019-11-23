@@ -471,7 +471,7 @@
                     </el-form-item>
                     <el-form-item label="邮箱" :label-width="'100px'">
                         <el-col :span="16">
-                            <el-input type="password" v-model="loginForm.email" autocomplete="off"></el-input>
+                            <el-input v-model="loginForm.email" autocomplete="off"></el-input>
                         </el-col>
                         <el-col :span="4" :offset="2">
                             <el-button type="primary" size="mini" round @click="sentCode()">发送验证码</el-button>
@@ -479,7 +479,7 @@
 
                     </el-form-item>
                     <el-form-item label="验证码" :label-width="'100px'">
-                        <el-input type="password" v-model="loginForm.code" autocomplete="off"></el-input>
+                        <el-input v-model="loginForm.code" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
