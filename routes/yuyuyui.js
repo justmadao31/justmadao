@@ -194,7 +194,7 @@ router.post('/saveCard', function (req, res) {
 
 router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
     var file = req.file;
-    fs.rename(file.path, 'public/images/cards/' + req.body.fileName, function (err, data) {
+    fs.rename(file.path, '/opt/justmadao/public/images/cards/' + req.body.fileName, function (err, data) {
         if (err) {
             console.log(err)
             res.send({status: 0});
