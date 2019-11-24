@@ -196,6 +196,7 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
     var file = req.file;
     fs.rename(file.path, 'public/images/cards/' + req.body.fileName, function (err, data) {
         if (err) {
+            console.log(err)
             res.send({status: 0});
         } else {
             gm('/opt/justmadao/public/images/cards/' + req.body.fileName)
@@ -238,7 +239,11 @@ router.get('/getdanmu', function (req, res) {
     res.send({code: 0, data: []})
 })
 router.post('/getdanmu/', function (req, res) {
-    res.send(JSON.stringify(req.body))
+    if (req.session.userInfo == null) {
+        res.send({code: 1})
+    } else {
+        res.send(JSON.stringify(req.body))
+    }
 })
 
 router.get('/getBiliBilidanmu', function (req, res1) {
