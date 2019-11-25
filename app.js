@@ -81,8 +81,6 @@ app.post('/sendCode', function (req, res) {
     req.session.lastCodeTime = new Date().getTime()
     req.session.code = code
 
-    console.log(req.session.lastCodeTime)
-
     emailUtil.sendEmail(req.body.email, str)
         .then(result => {
             res.send({code: 1, message: '已发送验证码，5分钟有效'})

@@ -194,14 +194,14 @@ router.post('/saveCard', function (req, res) {
 
 router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
     var file = req.file;
-    fs.rename(file.path, '/opt/justmadao/public/images/cards/' + req.body.fileName, function (err, data) {
+    fs.rename(file.path, path.join(__dirname, '../public/images/cards/' + req.body.fileName), function (err, data) {
         if (err) {
             console.log(err)
             res.send({status: 0});
         } else {
-            gm('/opt/justmadao/public/images/cards/' + req.body.fileName)
+            gm(path.join(__dirname, '../public/images/cards/' + req.body.fileName))
                 .resize(480, 270, "!")
-                .write('/opt/justmadao/public/images/thumbnail/' + req.body.fileName, function (err) {
+                .write(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName), function (err) {
                     if (err) {
                         console.log(err);
                     }
@@ -235,14 +235,42 @@ router.get('/getdanmu', function (req, res) {
     //将arg参数字符串反序列化为一个对象
     var params = querystring.parse(arg);
 
+    var sql = 'select * from danmu where cid=?'
 
-    res.send({code: 0, data: []})
+    pf.dbQuery(sql, [params.id])
+        .then(result => {
+            var list = []
+            result.forEach(function (v) {
+                list.push([v.time, v.type, v.color, v.author, v.text])
+            })
+            res.send({code: 0, data: list})
+        })
+        .catch(err => {
+            res.send({code: 0, data: []})
+        })
 })
 router.post('/getdanmu/', function (req, res) {
     if (req.session.userInfo == null) {
         res.send({code: 1})
     } else {
-        res.send(JSON.stringify(req.body))
+        var list = []
+        var str = []
+        var p = []
+        req.body.author = req.session.userInfo.name
+        for (var key in req.body) {
+            list.push(req.body[key])
+            p.push('?')
+            str.push('`' + (key == 'id' ? 'cid' : key) + '`')
+        }
+        var sql = 'insert into danmu (' + str.join(',') + ') value (' + p.join(',') + ')'
+
+        pf.dbQuery(sql, list)
+            .then(result => {
+                res.send({code: 0})
+            })
+            .catch(err => {
+                res.send({code: 0})
+            })
     }
 })
 
