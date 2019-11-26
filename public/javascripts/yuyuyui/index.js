@@ -95,6 +95,14 @@ var vueApp = new Vue({
                 value: '20'
             },
             {
+                title: '弥勒莲华',
+                value: '27'
+            },
+            {
+                title: '桐生静',
+                value: '28'
+            },
+            {
                 title: '楠芽吹',
                 value: '21'
             },
@@ -120,6 +128,10 @@ var vueApp = new Vue({
             }
         ],
         timeline: [
+            {
+                content: '增加了注册功能，现在可以发弹幕了',
+                timestamp: '2019-11-25'
+            },
             {
                 content: '增加了首页更新信息，现在可以拉取b站的弹幕了',
                 timestamp: '2019-11-14'

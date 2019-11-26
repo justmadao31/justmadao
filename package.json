@@ -8,6 +8,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "cookie-parser": "~1.4.4",
+    "cos-nodejs-sdk-v5": "^2.5.14",
     "debug": "~2.6.9",
     "dplayer": "^1.25.0",
     "ejs": "~2.6.1",

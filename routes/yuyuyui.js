@@ -14,6 +14,7 @@ const zlib = require('zlib');
 const xml2js = require('xml2js');
 const path = require('path');
 const emailUtil = require('../util/EmailUtil');
+const cos = require('../util/cosUtil');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('yuyuyui/index', {title: '闪光的花结', userInfo: req.session.userInfo});
@@ -197,6 +198,18 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
     fs.rename(file.path, path.join(__dirname, '../public/images/cards/' + req.body.fileName), function (err, data) {
         if (err) {
             console.log(err)
+            cos.putObject({
+                Bucket: 'yuyuyui-1257913680',
+                Region: 'ap-chengdu',
+                Key: 'yuyuyui/' + req.body.fileName,
+                StorageClass: 'STANDARD',
+                Body: fs.createReadStream(path.join(__dirname, '../public/images/cards/' + req.body.fileName)),
+                onProgress: function (progressData) {
+                    console.log(JSON.stringify(progressData));
+                }
+            }, function (err, data) {
+                console.log(err || data);
+            });
             res.send({status: 0});
         } else {
             gm(path.join(__dirname, '../public/images/cards/' + req.body.fileName))
@@ -204,6 +217,19 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
                 .write(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName), function (err) {
                     if (err) {
                         console.log(err);
+                    } else {
+                        cos.putObject({
+                            Bucket: 'yuyuyui-1257913680',
+                            Region: 'ap-chengdu',
+                            Key: 'thumbnail/' + req.body.fileName,
+                            StorageClass: 'STANDARD',
+                            Body: fs.createReadStream(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName)),
+                            onProgress: function (progressData) {
+                                console.log(JSON.stringify(progressData));
+                            }
+                        }, function (err, data) {
+                            console.log(err || data);
+                        });
                     }
                 });
             res.send({status: 1});
