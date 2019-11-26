@@ -195,21 +195,21 @@ router.post('/saveCard', function (req, res) {
 
 router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
     var file = req.file;
+    cos.putObject({
+        Bucket: 'yuyuyui-1257913680',
+        Region: 'ap-chengdu',
+        Key: 'yuyuyui/' + req.body.fileName,
+        StorageClass: 'STANDARD',
+        Body: fs.createReadStream(path.join(__dirname, '../public/images/cards/' + req.body.fileName)),
+        onProgress: function (progressData) {
+            console.log(JSON.stringify(progressData));
+        }
+    }, function (err, data) {
+        console.log(err || data);
+    });
     fs.rename(file.path, path.join(__dirname, '../public/images/cards/' + req.body.fileName), function (err, data) {
         if (err) {
             console.log(err)
-            cos.putObject({
-                Bucket: 'yuyuyui-1257913680',
-                Region: 'ap-chengdu',
-                Key: 'yuyuyui/' + req.body.fileName,
-                StorageClass: 'STANDARD',
-                Body: fs.createReadStream(path.join(__dirname, '../public/images/cards/' + req.body.fileName)),
-                onProgress: function (progressData) {
-                    console.log(JSON.stringify(progressData));
-                }
-            }, function (err, data) {
-                console.log(err || data);
-            });
             res.send({status: 0});
         } else {
             gm(path.join(__dirname, '../public/images/cards/' + req.body.fileName))
