@@ -306,58 +306,35 @@ var vueApp = new Vue({
             this.activeVideoNode = node
             if (data.isLeaf) {
                 this.videoUrl = this.videoPath + '.mp4';
+                if (this.dp) this.dp.destroy()
                 this.dpInit()
             }
         },
         dpInit: function () {
-            if (this.dp) {
-                this.dp.switchVideo({
-                        quality: [
-                            {
-                                name: '线路1',
-                                url: 'http://justmadao.club/video/' + this.videoUrl,
-                                type: 'normal',
-                            },
-                            {
-                                name: '线路2',
-                                url: 'http://106.12.173.132:3000/video/' + this.videoUrl,
-                                type: 'normal',
-                            },
-                        ],
-                        defaultQuality: 0
-                    },
-                    {
-                        id: this.activeVideoNode.data.id,
-                        api: '/yuyuyui/getdanmu/',
-                        user: 'justmadao',
-                        addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.data.cid]
-                    })
-            } else {
-                this.dp = new DPlayer({
-                    container: document.getElementById('dplayer'),
-                    video: {
-                        quality: [
-                            {
-                                name: '线路1',
-                                url: 'http://justmadao.club/video/' + this.videoUrl,
-                                type: 'normal',
-                            },
-                            {
-                                name: '线路2',
-                                url: 'http://106.12.173.132:3000/video/' + this.videoUrl,
-                                type: 'normal',
-                            },
-                        ],
-                        defaultQuality: 0
-                    },
-                    danmaku: {
-                        id: this.activeVideoNode.data.id,
-                        user: 'justmadao',
-                        api: '/yuyuyui/getdanmu/',
-                        addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.data.cid]
-                    }
-                });
-            }
+            this.dp = new DPlayer({
+                container: document.getElementById('dplayer'),
+                video: {
+                    quality: [
+                        {
+                            name: '线路1',
+                            url: 'http://justmadao.club/video/' + this.videoUrl,
+                            type: 'normal',
+                        },
+                        {
+                            name: '线路2',
+                            url: 'http://106.12.173.132:3000/video/' + this.videoUrl,
+                            type: 'normal',
+                        },
+                    ],
+                    defaultQuality: 0
+                },
+                danmaku: {
+                    id: this.activeVideoNode.data.id,
+                    user: 'justmadao',
+                    api: '/yuyuyui/getdanmu/',
+                    addition: ['/yuyuyui/getBiliBilidanmu?cid=' + this.activeVideoNode.data.cid]
+                }
+            });
         },
         loadNode(node, resolve) {
             if (node.level == 0) {
