@@ -305,14 +305,26 @@ var vueApp = new Vue({
         videoTreeClick(data, node) {
             this.activeVideoNode = node
             if (data.isLeaf) {
-                this.videoUrl = 'http://justmadao.club/video/' + this.videoPath + '.mp4';
+                this.videoUrl = this.videoPath + '.mp4';
                 this.dpInit()
             }
         },
         dpInit: function () {
             if (this.dp) {
                 this.dp.switchVideo({
-                        url: this.videoUrl,
+                        quality: [
+                            {
+                                name: '线路1',
+                                url: 'http://justmadao.club/video/' + this.videoUrl,
+                                type: 'normal',
+                            },
+                            {
+                                name: '线路2',
+                                url: 'http://106.12.173.132:3000/video/' + this.videoUrl,
+                                type: 'normal',
+                            },
+                        ],
+                        defaultQuality: 0
                     },
                     {
                         id: this.activeVideoNode.data.id,
@@ -324,7 +336,19 @@ var vueApp = new Vue({
                 this.dp = new DPlayer({
                     container: document.getElementById('dplayer'),
                     video: {
-                        url: this.videoUrl,
+                        quality: [
+                            {
+                                name: '线路1',
+                                url: 'http://justmadao.club/video/' + this.videoUrl,
+                                type: 'normal',
+                            },
+                            {
+                                name: '线路2',
+                                url: 'http://106.12.173.132:3000/video/' + this.videoUrl,
+                                type: 'normal',
+                            },
+                        ],
+                        defaultQuality: 0
                     },
                     danmaku: {
                         id: this.activeVideoNode.data.id,
