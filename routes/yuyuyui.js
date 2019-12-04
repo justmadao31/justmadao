@@ -200,18 +200,6 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
             console.log(err)
             res.send({status: 0});
         } else {
-            cos.putObject({
-                Bucket: 'yuyuyui-1257913680',
-                Region: 'ap-chengdu',
-                Key: 'yuyuyui/' + req.body.fileName,
-                StorageClass: 'STANDARD',
-                Body: fs.createReadStream(path.join(__dirname, '../public/images/cards/' + req.body.fileName)),
-                onProgress: function (progressData) {
-                    console.log(JSON.stringify(progressData));
-                }
-            }, function (err, data) {
-                console.log(err || data);
-            });
             gm(path.join(__dirname, '../public/images/cards/' + req.body.fileName))
                 .resize(480, 270, "!")
                 .write(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName), function (err) {
@@ -221,14 +209,26 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
                         cos.putObject({
                             Bucket: 'yuyuyui-1257913680',
                             Region: 'ap-chengdu',
-                            Key: 'thumbnail/' + req.body.fileName,
+                            Key: 'yuyuyui/' + req.body.fileName,
                             StorageClass: 'STANDARD',
-                            Body: fs.createReadStream(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName)),
+                            Body: fs.createReadStream(path.join(__dirname, '../public/images/cards/' + req.body.fileName)),
                             onProgress: function (progressData) {
                                 console.log(JSON.stringify(progressData));
                             }
                         }, function (err, data) {
                             console.log(err || data);
+                            cos.putObject({
+                                Bucket: 'yuyuyui-1257913680',
+                                Region: 'ap-chengdu',
+                                Key: 'thumbnail/' + req.body.fileName,
+                                StorageClass: 'STANDARD',
+                                Body: fs.createReadStream(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName)),
+                                onProgress: function (progressData) {
+                                    console.log(JSON.stringify(progressData));
+                                }
+                            }, function (err, data) {
+                                console.log(err || data);
+                            });
                         });
                     }
                 });
