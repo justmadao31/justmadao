@@ -203,36 +203,8 @@ router.post('/uploadCardImg', upload.single('pic'), function (req, res, next) {
             gm(path.join(__dirname, '../public/images/cards/' + req.body.fileName))
                 .resize(480, 270, "!")
                 .write(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName), function (err) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        cos.putObject({
-                            Bucket: 'yuyuyui-1257913680',
-                            Region: 'ap-chengdu',
-                            Key: 'yuyuyui/' + req.body.fileName,
-                            StorageClass: 'STANDARD',
-                            Body: fs.createReadStream(path.join(__dirname, '../public/images/cards/' + req.body.fileName)),
-                            onProgress: function (progressData) {
-                                console.log(JSON.stringify(progressData));
-                            }
-                        }, function (err, data) {
-                            console.log(err || data);
-                            cos.putObject({
-                                Bucket: 'yuyuyui-1257913680',
-                                Region: 'ap-chengdu',
-                                Key: 'thumbnail/' + req.body.fileName,
-                                StorageClass: 'STANDARD',
-                                Body: fs.createReadStream(path.join(__dirname, '../public/images/thumbnail/' + req.body.fileName)),
-                                onProgress: function (progressData) {
-                                    console.log(JSON.stringify(progressData));
-                                }
-                            }, function (err, data) {
-                                console.log(err || data);
-                            });
-                        });
-                    }
+                    res.send({status: 1});
                 });
-            res.send({status: 1});
         }
     })
 
