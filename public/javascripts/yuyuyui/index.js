@@ -493,6 +493,7 @@ var vueApp = new Vue({
             var fileName = this.activeCard.title + '·' + this.activeCard.character + (type == 1 ? 'before' : 'after') + file.name.substring(file.name.lastIndexOf('.'), file.name.length)
             formdata.append("pic", file);
             formdata.append("fileName", fileName);
+            this.$axios.post('/yuyuyui/uploadCardImg', formdata)
             this.$axios.post('http://106.12.173.132:3000/yuyuyui/uploadCardImg', formdata)
                 .then(res => {
                     if (res.data.status == 1) {
