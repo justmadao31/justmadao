@@ -433,9 +433,9 @@ var vueApp = new Vue({
         },
         getCardPath: function (type, path) {
             if (type == 1) {
-                return 'http://justmadao.club' + path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
+                return 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/' + path.replace('yuyuyui', 'thumbnail').replace('png', 'jpg')
             } else {
-                return 'http://justmadao.club' + path.replace('yuyuyui', '/images/cards')
+                return 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/' + path
             }
         },
         toCardInfo: function (card) {
@@ -493,18 +493,22 @@ var vueApp = new Vue({
             var fileName = this.activeCard.title + '·' + this.activeCard.character + (type == 1 ? 'before' : 'after') + file.name.substring(file.name.lastIndexOf('.'), file.name.length)
             formdata.append("pic", file);
             formdata.append("fileName", fileName);
-            this.$axios.post('/yuyuyui/uploadCardImg', formdata)
+            this.$axios.post('http://106.12.173.132:3000/yuyuyui/uploadCardImg', formdata)
                 .then(res => {
-                    this.$alert('上传成功', '成功', {
-                        confirmButtonText: '确定',
-                        callback: action => {
+                    if (res.data.status == 1) {
+                        this.$alert('上传成功', '成功', {
+                            confirmButtonText: '确定',
+                            callback: action => {
 
+                            }
+                        });
+                        if (type == 1) {
+                            this.activeCard.beforeImgName = 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/yuyuyui/' + fileName
+                        } else {
+                            this.activeCard.afterImgName = 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/yuyuyui/' + fileName
                         }
-                    });
-                    if (type == 1) {
-                        this.activeCard.beforeImgName = 'yuyuyui/' + fileName
                     } else {
-                        this.activeCard.afterImgName = 'yuyuyui/' + fileName
+                        alert(res.data.message)
                     }
                 })
         },
