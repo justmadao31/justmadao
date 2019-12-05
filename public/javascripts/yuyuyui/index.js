@@ -504,9 +504,9 @@ var vueApp = new Vue({
                             }
                         });
                         if (type == 1) {
-                            this.activeCard.beforeImgName = 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/yuyuyui/' + fileName
+                            this.activeCard.beforeImgName = 'yuyuyui/' + fileName
                         } else {
-                            this.activeCard.afterImgName = 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/yuyuyui/' + fileName
+                            this.activeCard.afterImgName = 'yuyuyui/' + fileName
                         }
                     } else {
                         alert(res.data.message)
@@ -523,7 +523,7 @@ var vueApp = new Vue({
                 });
                 return
             }
-            console.log(JSON.stringify(this.activeCard, null, 4))
+            //console.log(JSON.stringify(this.activeCard, null, 4))
             this.$axios.post('/yuyuyui/saveCard', this.activeCard)
                 .then(res => {
                     this.$alert('保存成功', '成功', {
