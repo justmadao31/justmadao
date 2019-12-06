@@ -542,9 +542,8 @@ var vueApp = new Vue({
         },
         editVideoNode: function () {
             var list = []
-
             if (this.activeVideoNode) {
-                $.each(this.activeVideoNode.childNodes, (i, o) => {
+                this.activeVideoNode.childNodes.forEach(function (o, i) {
                     list.push(o.data)
                 })
             }
