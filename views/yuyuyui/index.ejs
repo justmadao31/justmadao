@@ -3,31 +3,32 @@
 <head>
     <title><%= title %></title>
     <% include ./include/head.ejs %>
+    <style>
+        [v-clock]{
+            display: none;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        .el-header{
+            padding: 0;
+        }
+        .el-row {
+            margin-bottom: 20px;
+        }
+
+        .text-purple {
+            color: #F925E1;
+        }
+
+        .el-card__header {
+            padding: 10px 15px;
+        }
+
+    </style>
 </head>
-<style>
-    [v-clock]{
-        display: none;
-    }
-    body{
-        padding: 0;
-        margin: 0;
-    }
-    .el-header{
-        padding: 0;
-    }
-    .el-row {
-        margin-bottom: 20px;
-    }
 
-    .text-purple {
-        color: #F925E1;
-    }
-
-    .el-card__header {
-        padding: 10px 15px;
-    }
-
-</style>
 <body>
 <div id="vueApp" v-clock>
     <el-container>
