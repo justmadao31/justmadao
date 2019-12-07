@@ -129,6 +129,10 @@ var vueApp = new Vue({
         ],
         timeline: [
             {
+                content: '视频增加了线路2，觉得视频卡顿的人可以试试',
+                timestamp: '2019-12-7'
+            },
+            {
                 content: '增加了注册功能，现在可以发弹幕了',
                 timestamp: '2019-11-25'
             },
