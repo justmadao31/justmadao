@@ -322,7 +322,7 @@ var vueApp = new Vue({
                         },
                         {
                             name: '线路2',
-                            url: 'http://106.12.173.132:3000/video/' + this.videoUrl,
+                            url: 'http://172.81.238.32:3000/video/' + this.videoUrl,
                             type: 'normal',
                         },
                     ],
@@ -494,7 +494,7 @@ var vueApp = new Vue({
             formdata.append("pic", file);
             formdata.append("fileName", fileName);
             this.$axios.post('/yuyuyui/uploadCardImg', formdata)
-            this.$axios.post('http://106.12.173.132:3000/yuyuyui/uploadCardImg', formdata)
+            this.$axios.post('http://172.81.238.32:3000/yuyuyui/uploadCardImg', formdata)
                 .then(res => {
                     if (res.data.status == 1) {
                         this.$alert('上传成功', '成功', {
