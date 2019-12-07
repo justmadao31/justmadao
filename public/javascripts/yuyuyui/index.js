@@ -180,6 +180,8 @@ var vueApp = new Vue({
         dp: null,
         dialogLoginVisible: false,
         editNode: null,
+        videoRoute: 1,
+        videoBase: 'http://justmadao.club/video/',
         //卡面图鉴
         cardsPageNo: 1,
         cardsPageSize: 12,
@@ -310,27 +312,15 @@ var vueApp = new Vue({
             this.activeVideoNode = node
             if (data.isLeaf) {
                 this.videoUrl = this.videoPath + '.mp4';
-                if (this.dp) this.dp.destroy()
                 this.dpInit()
             }
         },
         dpInit: function () {
+            if (this.dp) this.dp.destroy()
             this.dp = new DPlayer({
                 container: document.getElementById('dplayer'),
                 video: {
-                    quality: [
-                        {
-                            name: '线路1',
-                            url: 'http://justmadao.club/video/' + this.videoUrl,
-                            type: 'normal',
-                        },
-                        {
-                            name: '线路2',
-                            url: 'http://172.81.238.32:3000/video/' + this.videoUrl,
-                            type: 'normal',
-                        },
-                    ],
-                    defaultQuality: 0
+                    url: this.videoBase + this.videoUrl
                 },
                 danmaku: {
                     id: this.activeVideoNode.data.id,
@@ -366,6 +356,19 @@ var vueApp = new Vue({
                     resolve(response.data.result)
                 })
             }
+        },
+        changeVideoRoute: function (type) {
+            if (this.videoRoute == type) return
+            this.videoRoute = type
+            switch (type) {
+                case 1:
+                    this.videoBase = 'http://justmadao.club/video/';
+                    break;
+                case 2:
+                    this.videoBase = 'http://172.81.238.32:3000/video/';
+                    break;
+            }
+            this.dpInit()
         },
         getVideoTreeNode: function (node) {
             return this.$axios.post('/yuyuyui/getVideoTreeNode', {pid: node.data ? node.data.id : 0})

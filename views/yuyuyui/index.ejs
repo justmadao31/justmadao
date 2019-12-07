@@ -154,6 +154,10 @@
                         <!--                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">-->
                         <!--                            <source :src="videoUrl" type="video/mp4">-->
                         <!--                        </video>-->
+                        <el-button-group v-show="dp!=null">
+                            <el-button :type="videoRoute==1?'primary':''" @click="changeVideoRoute(1)">线路1</el-button>
+                            <el-button :type="videoRoute==2?'primary':''" @click="changeVideoRoute(2)">线路2</el-button>
+                        </el-button-group>
                         <el-button type="danger" round @click="gotoXL" :disabled="activeVideoNode.data.src==''"
                                    v-if="activeVideoNode!=null&&activeVideoNode.data.leaf==1">新浪视频
                         </el-button>
@@ -506,4 +510,4 @@
 </div>
 </body>
 </html>
-<script src="/javascripts/yuyuyui/index.js"></script>
+<script src="http://justmadao.club/javascripts/yuyuyui/index.js"></script>
