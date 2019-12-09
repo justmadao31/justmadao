@@ -222,7 +222,7 @@
                                         加载中<span class="dot">...</span>
                                     </div>
                                 </el-image>
-                                <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
+                                <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)" v-if="item.afterImgName!=null&&item.afterImgName!=''"
                                           :fit="'contain'">
                                     <div slot="placeholder" class="image-slot">
                                         加载中<span class="dot">...</span>
@@ -259,7 +259,7 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div v-show="isCardEdit" v-if="activeCard!=null">
+                <div v-if="isCardEdit&&activeCard!=null">
                     <el-button @click="isCardEdit=false" type="primary">返回列表</el-button>
                     <h1>{{activeCard.title}}·{{activeCard.rate}}·{{activeCard.character}}·{{activeCard.color}}</h1>
                     <el-row>
@@ -510,4 +510,4 @@
 </div>
 </body>
 </html>
-<script src="http://justmadao.club/javascripts/yuyuyui/index.js"></script>
+<script src="/javascripts/yuyuyui/index.js"></script>
