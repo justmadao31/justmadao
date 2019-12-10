@@ -149,21 +149,21 @@
                                     </el-form>
                                 </el-col>
                             </el-row>
+                            <el-form :inline="true" :model="trimDanmuForm" class="demo-form-inline">
+                                <el-form-item label="弹幕id">
+                                    <el-input v-model="trimDanmuForm.cid" placeholder="弹幕id"></el-input>
+                                </el-form-item>
+                                <el-form-item label="原始时间">
+                                    <el-input v-model="trimDanmuForm.oldTime" placeholder="原始时间"></el-input>
+                                </el-form-item>
+                                <el-form-item label="新时间">
+                                    <el-input v-model="trimDanmuForm.newTime" placeholder="新时间"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="trimDanmu">修改</el-button>
+                                </el-form-item>
+                            </el-form>
                         <% } %>
-                        <el-form :inline="true" :model="trimDanmuForm" class="demo-form-inline">
-                            <el-form-item label="弹幕id">
-                                <el-input v-model="trimDanmuForm.cid" placeholder="弹幕id"></el-input>
-                            </el-form-item>
-                            <el-form-item label="原始时间">
-                                <el-input v-model="trimDanmuForm.oldTime" placeholder="原始时间"></el-input>
-                            </el-form-item>
-                            <el-form-item label="新时间">
-                                <el-input v-model="trimDanmuForm.newTime" placeholder="新时间"></el-input>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="trimDanmu">修改</el-button>
-                            </el-form-item>
-                        </el-form>
                         <div id="dplayer" style="margin-bottom: 10px"></div>
                         <!--                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">-->
                         <!--                            <source :src="videoUrl" type="video/mp4">-->
