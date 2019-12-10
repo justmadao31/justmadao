@@ -178,6 +178,11 @@ var vueApp = new Vue({
             isLeaf: 'leaf'
         },
         dp: null,
+        trimDanmuForm: {
+            cid: '',
+            newTime: '',
+            oldTime: ''
+        },
         dialogLoginVisible: false,
         editNode: null,
         videoRoute: 1,
@@ -417,6 +422,12 @@ var vueApp = new Vue({
         },
         gotoXL: function () {
             window.open(this.activeVideoNode.data.src)
+        },
+        trimDanmu: function () {
+            this.$axios.post('/yuyuyui/trimDanmu', this.trimDanmuForm)
+                .then(res => {
+                    alert(res.data.message)
+                })
         },
         //卡面图鉴
         getCards: function (page) {

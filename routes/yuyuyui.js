@@ -247,6 +247,7 @@ router.get('/getdanmu', function (req, res) {
             res.send({code: 0, data: []})
         })
 })
+
 router.post('/getdanmu/', function (req, res) {
     if (req.session.userInfo == null) {
         res.send({code: 1})
@@ -329,6 +330,31 @@ router.get('/getBiliBilidanmu', function (req, res1) {
             .catch(() => {
                 res1.send({code: 0, data: []})
             })
+    }
+})
+
+router.post('/trimDanmu', function (req, res) {
+    if (req.session.userInfo != null && req.session.userInfo.level == 1) {
+        pf.fsRead(path.join(__dirname, "../public/danmu/" + req.body.cid + '.json'))
+            .then(data => {
+                var danmu = JSON.parse(data);
+                var ratio = req.body.newTime / req.body.oldTime
+                danmu.data.forEach(function (v) {
+                    v[0] = parseFloat(v[0]) * ratio
+                })
+                pf.fsWrite(path.join(__dirname, "../public/danmu/" + req.body.cid + '.json'), JSON.stringify(danmu))
+                    .then(() => {
+                        res.send({status: 1, message: '修改成功'})
+                    })
+                    .catch(() => {
+                        res.send({status: 0, message: '写入失败'})
+                    })
+            })
+            .catch(() => {
+                res.send({status: 0, message: '读取文件出错'})
+            })
+    } else {
+        res.send({status: 0, message: '没有修改权限'})
     }
 })
 module.exports = router;
