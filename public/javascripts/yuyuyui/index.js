@@ -451,9 +451,9 @@ var vueApp = new Vue({
         },
         getCardPath: function (type, path) {
             if (type == 1) {
-                return 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/' + path.replace('yuyuyui', 'thumbnail').replace('png', 'jpg')
+                return path.replace('yuyuyui', '/thumbnail').replace('png', 'jpg')
             } else {
-                return 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/' + path
+                return path.replace('yuyuyui', '/cards')
             }
         },
         toCardInfo: function (card) {

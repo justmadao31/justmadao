@@ -181,7 +181,7 @@ router.post('/saveCard', function (req, res) {
             data.result = result
 
             if (req.body.id == null) {
-                pf.saveNews('增加图鉴：' + req.body.title + '·' + req.body.character, req.body.beforeImgName.replace('yuyuyui', 'https://yuyuyui-1257913680.cos.ap-chengdu.myqcloud.com/thumbnail').replace('png', 'jpg'))
+                pf.saveNews('增加图鉴：' + req.body.title + '·' + req.body.character, req.body.beforeImgName.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg'))
             }
 
             res.end(JSON.stringify(data));
