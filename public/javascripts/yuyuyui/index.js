@@ -451,9 +451,9 @@ var vueApp = new Vue({
         },
         getCardPath: function (type, path) {
             if (type == 1) {
-                return path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
+                return 'http://172.81.238.32:3000' + path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
             } else {
-                return path.replace('yuyuyui', '/images/cards')
+                return 'http://172.81.238.32:3000' + path.replace('yuyuyui', '/images/cards')
             }
         },
         toCardInfo: function (card) {
