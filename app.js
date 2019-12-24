@@ -18,7 +18,7 @@ app.use(session({
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    cookie: ('name', 'value', {maxAge: 30 * 60 * 1000, secure: false})
+    cookie: ('name', 'value', {maxAge: 120 * 60 * 1000, secure: false})
 }));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

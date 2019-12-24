@@ -85,7 +85,7 @@ router.post('/getCards', function (req, res) {
     if (req.body.color.length != 0) {
         condition += ' and color in ('
         req.body.color.forEach(function (value, index, array) {
-            if (index != 0 && index != array.length - 2) condition += ','
+            if (index != 0) condition += ','
             condition += '?'
             list.push(value)
         })
@@ -94,7 +94,7 @@ router.post('/getCards', function (req, res) {
     if (req.body.rate.length != 0) {
         condition += ' and rate in ('
         req.body.rate.forEach(function (value, index, array) {
-            if (index != 0 && index != array.length - 2) condition += ','
+            if (index != 0) condition += ','
             condition += '?'
             list.push(value)
         })
@@ -103,7 +103,7 @@ router.post('/getCards', function (req, res) {
     if (req.body.character.length != 0) {
         condition += ' and `character` in ('
         req.body.character.forEach(function (value, index, array) {
-            if (index != 0 && index != array.length - 2) condition += ','
+            if (index != 0) condition += ','
             condition += '?'
             list.push(value)
         })
