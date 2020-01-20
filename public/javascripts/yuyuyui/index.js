@@ -355,6 +355,15 @@ var vueApp = new Vue({
                     "size": 0,
                     "orderNo": 1,
                     "leaf": false
+                }, {
+                    "id": 99,
+                    "pid": 0,
+                    "label": "特典剧情",
+                    "isLeaf": 0,
+                    "src": "",
+                    "size": 0,
+                    "orderNo": 3,
+                    "leaf": false
                 }])
             } else {
                 this.getVideoTreeNode(node).then(response => {
