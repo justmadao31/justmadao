@@ -199,8 +199,8 @@ var vueApp = new Vue({
         },
         isCardEdit: false,
         activeCard: null,
-        novelTable:[
-            {title:'上里日向是巫女01.pdf'}
+        novelTable: [
+            {title: '上里日向是巫女01.pdf'}
         ]
     },
     methods: {
@@ -597,7 +597,9 @@ var vueApp = new Vue({
         }
     },
     watch: {
-
+        'activeNav': function (nv, ov) {
+            if (nv == null) this.activeNav = ov
+        }
     },
     created: function () {
 // 添加请求拦截器
