@@ -198,7 +198,10 @@ var vueApp = new Vue({
             character: []
         },
         isCardEdit: false,
-        activeCard: null
+        activeCard: null,
+        novelTable:[
+            {title:'上里日向是巫女01.pdf'}
+        ]
     },
     methods: {
         //通用部分
@@ -594,20 +597,7 @@ var vueApp = new Vue({
         }
     },
     watch: {
-        'activeNav': function (newValue, oldValue) {
-            if (newValue == null) {
-                this.activeNav = oldValue
-            }
 
-            if (this.dp) {
-                if (newValue != '4') {
-                    this.dp.pause()
-                } else {
-                    this.dp.play()
-                }
-            }
-
-        }
     },
     created: function () {
 // 添加请求拦截器
