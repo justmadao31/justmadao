@@ -4,16 +4,19 @@
     <title><%= title %></title>
     <% include ./include/head.ejs %>
     <style>
-        [v-clock]{
+        [v-clock] {
             display: none;
         }
-        body{
+
+        body {
             padding: 0;
             margin: 0;
         }
-        .el-header{
+
+        .el-header {
             padding: 0;
         }
+
         .el-row {
             margin-bottom: 20px;
         }
@@ -54,8 +57,10 @@
                             <el-carousel trigger="click" height="410px" type="card">
                                 <el-carousel-item v-for="(item,index) in newsList" :key="index">
                                     <div style="width: 100%;height: 360px;">
-                                        <img :src="'http://172.81.238.32:3000'+item.image" style="display:block;height: 100%;margin:0 auto">
-                                        <h3 style="position: absolute;bottom: 0;width:100%;text-align: center">{{item.title}}</h3>
+                                        <img :src="'http://172.81.238.32:3000'+item.image"
+                                             style="display:block;height: 100%;margin:0 auto">
+                                        <h3 style="position: absolute;bottom: 0;width:100%;text-align: center">
+                                            {{item.title}}</h3>
                                     </div>
                                 </el-carousel-item>
                             </el-carousel>
@@ -236,7 +241,8 @@
                                         加载中<span class="dot">...</span>
                                     </div>
                                 </el-image>
-                                <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)" v-if="item.afterImgName!=null&&item.afterImgName!=''"
+                                <el-image v-show="item.open==1" :src="getCardPath(1,item.afterImgName)"
+                                          v-if="item.afterImgName!=null&&item.afterImgName!=''"
                                           :fit="'contain'">
                                     <div slot="placeholder" class="image-slot">
                                         加载中<span class="dot">...</span>
@@ -458,7 +464,8 @@
                 </div>
             </div>
             <div v-show="activeNav=='2-2'" style="padding: 0">
-                <iframe src="http://justmadao.club/template/elf.pdf" style="width: 100%;min-height: 1440px"></iframe>
+                <iframe v-if="!ismobile" src="http://justmadao.club/template/elf.pdf"
+                        style="width: 100%;min-height: 1440px"></iframe>
             </div>
             <div v-show="activeNav=='5'">
                 <div style="width: 80%;margin: 0 auto">
@@ -483,6 +490,11 @@
                     </el-table>
                 </div>
             </div>
+            <div v-show="activeNav=='6'">
+                <div>
+
+                </div>
+            </div>
             <div v-show="activeNav=='3'">
                 <div style="width: 80%;margin: 0 auto">
                     大家好，我是肥皂泡。因为被人用那1p的剧情追着举报，ab站都阵亡了。于是想着自己建个网站吧。就试着做了一个简单的网站放花结视频。但是想着光放花结视频太浪费了，所以加了图鉴，
@@ -490,8 +502,10 @@
                     海外党愿意支持的可以点这里：
                     <el-link type="primary" href="https://www.paypal.me/justmadao" target="_blank">paypal主页</el-link>
                     <div style="max-width:800px;display: flex;flex-direction: row;justify-content: space-between;margin-top: 20px">
-                        <el-image style="width: 300px" src="http://172.81.238.32:3000/images/zfb.JPG" :fit="'fit'"></el-image>
-                        <el-image style="width: 300px" src="http://172.81.238.32:3000/images/wx.JPG" :fit="'fit'"></el-image>
+                        <el-image style="width: 300px" src="http://172.81.238.32:3000/images/zfb.JPG"
+                                  :fit="'fit'"></el-image>
+                        <el-image style="width: 300px" src="http://172.81.238.32:3000/images/wx.JPG"
+                                  :fit="'fit'"></el-image>
                     </div>
                 </div>
             </div>
@@ -522,7 +536,8 @@
                         <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="确认密码" :label-width="'100px'">
-                        <el-input type="password" v-model="loginForm.password2" autocomplete="off" p="密码需要6-12位英文与数字的组合"></el-input>
+                        <el-input type="password" v-model="loginForm.password2" autocomplete="off"
+                                  p="密码需要6-12位英文与数字的组合"></el-input>
                     </el-form-item>
                     <el-form-item label="邮箱" :label-width="'100px'">
                         <el-col :span="16">

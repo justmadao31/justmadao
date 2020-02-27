@@ -1,9 +1,20 @@
 Vue.prototype.$axios = axios;
+
+function ismobile() {
+    var mobileArry = ["iPhone", "iPad", "Android", "Windows Phone", "BB10; Touch", "BB10; Touch", "PlayBook", "Nokia"];
+    var ua = navigator.userAgent;
+    var res = mobileArry.filter(function (arr) {
+        return ua.indexOf(arr) > 0;
+    });
+    return res.length > 0;
+}
+
 var vueApp = new Vue({
     el: '#vueApp',
     data: {
         userDto: null,
         activeNav: '1',
+        ismobile: ismobile(),
         loginForm: {
             username: '',
             password: '',
@@ -599,6 +610,7 @@ var vueApp = new Vue({
     watch: {
         'activeNav': function (nv, ov) {
             if (nv == null) this.activeNav = ov
+            if (nv == '2-2') window.open('http://justmadao.club/template/elf.pdf')
         }
     },
     created: function () {
