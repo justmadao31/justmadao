@@ -610,7 +610,7 @@ var vueApp = new Vue({
     watch: {
         'activeNav': function (nv, ov) {
             if (nv == null) this.activeNav = ov
-            if (nv == '2-2') window.open('http://justmadao.club/template/elf.pdf')
+            if (nv == '2-2'&&this.ismobile) window.open('http://justmadao.club/template/elf.pdf')
         }
     },
     created: function () {
