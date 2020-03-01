@@ -212,7 +212,9 @@ var vueApp = new Vue({
         activeCard: null,
         novelTable: [
             {title: '上里日向是巫女01.pdf'}
-        ]
+        ],
+        comicNumber: 1,
+        comicCNuber: 1
     },
     methods: {
         //通用部分
@@ -574,6 +576,18 @@ var vueApp = new Vue({
                         }
                     });
                 })
+        },
+        changeComicNumber: function (value) {
+            this.comicCNuber = 1
+        },
+        changeComicCNumber: function (value) {
+            document.body.scrollTop=document.documentElement.scrollTop=0
+            if (value > 4 && this.comicNumber < 4) {
+                this.comicNumber++
+                this.comicCNuber=1
+            } else {
+                this.comicCNuber = value
+            }
         }
     },
     computed: {
@@ -605,12 +619,16 @@ var vueApp = new Vue({
             } else {
                 return []
             }
+        },
+        comicCNuberMax:function () {
+            if (this.comicNumber == 4) return 2
+            return 4
         }
     },
     watch: {
         'activeNav': function (nv, ov) {
             if (nv == null) this.activeNav = ov
-            if (nv == '2-2'&&this.ismobile) window.open('http://justmadao.club/template/elf.pdf')
+            if (nv == '2-2' && this.ismobile) window.open('http://justmadao.club/template/elf.pdf')
         }
     },
     created: function () {
