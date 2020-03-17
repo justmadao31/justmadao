@@ -464,7 +464,7 @@
                 </div>
             </div>
             <div v-if="activeNav=='2-2'" style="padding: 0">
-                <iframe v-if="!ismobile" src="http://justmadao.club/template/elf.pdf"
+                <iframe v-if="!ismobile" src="http://172.81.238.32:3000/template/elf.pdf"
                         style="width: 100%;min-height: 1440px"></iframe>
             </div>
             <div v-if="activeNav=='5'">
@@ -482,9 +482,9 @@
                                 label="操作"
                                 width="300">
                             <template slot-scope="scope">
-                                <el-link :href="'/novel/'+scope.row.title" target="_blank" type="primary">查看</el-link>
+                                <el-link :href="'http://172.81.238.32:3000/novel/'+scope.row.title" target="_blank" type="primary">查看</el-link>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <el-link :href="'/novel/'+scope.row.title" download type="primary">下载</el-link>
+                                <el-link :href="'http://172.81.238.32:3000/novel/'+scope.row.title" download type="primary">下载</el-link>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -496,7 +496,7 @@
                     <el-input-number v-model="comicCNuber" :min="1" :max="comicCNuberMax" @change=changeComicCNumber></el-input-number>
                 </div>
                 <div style="width: 100%;text-align: center">
-                    <img :src="'/comic/'+comicNumber+'-'+comicCNuber+'.jpg'" style="height: 1440px" @click="changeComicCNumber(comicCNuber+1)">
+                    <img :src="'http://172.81.238.32:3000/comic/'+comicNumber+'-'+comicCNuber+'.jpg'" style="height: 1440px" @click="changeComicCNumber(comicCNuber+1)">
                 </div>
                 <div style="text-align: center">
                     第&nbsp;<el-input-number v-model="comicNumber" :min="1" :max="4" @change=changeComicNumber></el-input-number>&nbsp;话

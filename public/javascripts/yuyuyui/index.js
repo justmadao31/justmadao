@@ -622,14 +622,14 @@ var vueApp = new Vue({
             }
         },
         comicCNuberMax:function () {
-            if (this.comicNumber == 4) return 3
+            if (this.comicNumber == 4) return 4
             return 4
         }
     },
     watch: {
         'activeNav': function (nv, ov) {
             if (nv == null) this.activeNav = ov
-            if (nv == '2-2' && this.ismobile) window.open('http://justmadao.club/template/elf.pdf')
+            if (nv == '2-2' && this.ismobile) window.open('http://172.81.238.32:3000/template/elf.pdf')
         }
     },
     created: function () {
