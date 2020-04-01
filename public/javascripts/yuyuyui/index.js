@@ -212,7 +212,8 @@ var vueApp = new Vue({
         activeCard: null,
         novelTable: [
             {title: '上里日向是巫女01.pdf'},
-            {title: '上里日向是巫女02.pdf'}
+            {title: '上里日向是巫女02.pdf'},
+            {title: '上里日向是巫女03.pdf'}
         ],
         comicNumber: 1,
         comicCNuber: 1
