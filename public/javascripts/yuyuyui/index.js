@@ -211,9 +211,10 @@ var vueApp = new Vue({
         isCardEdit: false,
         activeCard: null,
         novelTable: [
-            {title: '上里日向是巫女01.pdf'},
-            {title: '上里日向是巫女02.pdf'},
-            {title: '上里日向是巫女03.pdf'}
+            {title: '上里日向是巫女01.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu1.pdf'},
+            {title: '上里日向是巫女02.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu2.pdf'},
+            {title: '上里日向是巫女03.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu3.pdf'},
+            {title: '上里日向是巫女04.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu4.pdf'}
         ],
         comicNumber: 1,
         comicCNuber: 1
