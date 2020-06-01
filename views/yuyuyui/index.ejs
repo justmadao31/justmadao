@@ -500,7 +500,7 @@
                 </div>
                 <div style="text-align: center">
                     第&nbsp;<el-input-number v-model="comicNumber" :min="1" :max="5" @change=changeComicNumber></el-input-number>&nbsp;话
-                    <el-input-number v-model="comicCNuber" :min="1" :max="4" @change=changeComicCNumber></el-input-number>
+                    <el-input-number v-model="comicCNuber" :min="1" :max="comicCNuberMax" @change=changeComicCNumber></el-input-number>
                 </div>
             </div>
             <div v-if="activeNav=='3'">

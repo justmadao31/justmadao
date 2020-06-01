@@ -624,7 +624,7 @@ var vueApp = new Vue({
             }
         },
         comicCNuberMax:function () {
-            if (this.comicNumber == 5) return 2
+            if (this.comicNumber == 5) return 4
             return 4
         }
     },
