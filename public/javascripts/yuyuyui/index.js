@@ -214,7 +214,8 @@ var vueApp = new Vue({
             {title: '上里日向是巫女01.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu1.pdf'},
             {title: '上里日向是巫女02.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu2.pdf'},
             {title: '上里日向是巫女03.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu3.pdf'},
-            {title: '上里日向是巫女04.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu4.pdf'}
+            {title: '上里日向是巫女04.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu4.pdf'},
+            {title: '上里日向是巫女05.pdf',url:'http://172.81.238.32:3000/novel/%E4%B8%8A%E9%87%8C%E6%97%A5%E5%90%91%E6%98%AF%E5%B7%AB%E5%A5%B305.pdf'}
         ],
         comicNumber: 1,
         comicCNuber: 1
