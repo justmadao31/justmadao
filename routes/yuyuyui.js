@@ -357,4 +357,14 @@ router.post('/trimDanmu', function (req, res) {
         res.send({status: 0, message: '没有修改权限'})
     }
 })
+
+router.post('/getInfoLog', function (req, res) {
+    res.status(200);
+    var data = {}
+    pf.fsRead(path.join(__dirname, "../util/info.json"))
+        .then(str=>{
+            data=str
+            res.send(data)
+        })
+})
 module.exports = router;

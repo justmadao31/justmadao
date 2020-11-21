@@ -9,7 +9,7 @@ function ismobile() {
     return res.length > 0;
 }
 
-var ism=ismobile()
+var ism = ismobile()
 
 var vueApp = new Vue({
     el: '#vueApp',
@@ -212,15 +212,12 @@ var vueApp = new Vue({
         },
         isCardEdit: false,
         activeCard: null,
-        novelTable: [
-            {title: '上里日向是巫女01.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu1.pdf'},
-            {title: '上里日向是巫女02.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu2.pdf'},
-            {title: '上里日向是巫女03.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu3.pdf'},
-            {title: '上里日向是巫女04.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu4.pdf'},
-            {title: '上里日向是巫女05.pdf',url:'http://justmadao.club/novel/%E4%B8%8A%E9%87%8C%E6%97%A5%E5%90%91%E6%98%AF%E5%B7%AB%E5%A5%B305.pdf'}
-        ],
+        novelTable: [],
         comicNumber: 1,
-        comicCNuber: 1
+        comicCNuber: 1,
+        comicChapterMax: 1,
+        comicChapterPage: 1,
+        showComic: true
     },
     methods: {
         //通用部分
@@ -584,16 +581,35 @@ var vueApp = new Vue({
                 })
         },
         changeComicNumber: function (value) {
+            var vm = this
+            this.showComic = false
             this.comicCNuber = 1
+            this.$nextTick(function () {
+                vm.showComic = true
+            })
         },
-        changeComicCNumber: function (value) {
-            document.body.scrollTop=document.documentElement.scrollTop=0
-            if (value > 4 && this.comicNumber < 4) {
+        changeComicPageNumber: function (value) {
+            var vm = this
+            this.showComic = false
+            document.body.scrollTop = document.documentElement.scrollTop = 0
+            if (value > 4 && this.comicNumber < this.comicChapterMax) {
                 this.comicNumber++
-                this.comicCNuber=1
+                this.comicCNuber = 1
             } else {
                 this.comicCNuber = value
             }
+            this.$nextTick(function () {
+                vm.showComic = true
+            })
+        },
+        getInfoLog: function () {
+            this.$axios.post('/yuyuyui/getInfoLog', {})
+                .then(res => {
+                    this.novelTable = res.data.novelList
+                    this.comicChapterMax = res.data.comicChapterMax
+                    this.comicChapterPage = res.data.comicChapterPage
+                    //window.console.log(res.data)
+                })
         }
     },
     computed: {
@@ -626,9 +642,9 @@ var vueApp = new Vue({
                 return []
             }
         },
-        comicCNuberMax:function () {
-            if (this.comicNumber == 5) return 4
-            return 4
+        comicCNuberMax: function () {
+            if (this.comicNumber == this.comicChapterMax) return this.comicChapterPage
+            return 99
         }
     },
     watch: {
@@ -659,6 +675,7 @@ var vueApp = new Vue({
         });
 
         this.getNews()
+        this.getInfoLog()
     },
     mounted: function () {
         window.vueApp = this;
