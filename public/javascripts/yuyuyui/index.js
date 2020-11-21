@@ -595,6 +595,12 @@ var vueApp = new Vue({
             if (value > 4 && this.comicNumber < this.comicChapterMax) {
                 this.comicNumber++
                 this.comicCNuber = 1
+            } else if (value > this.comicCNuberMax && this.comicNumber >= this.comicChapterMax) {
+                this.$alert('已经是最后一页了', '', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        this.comicCNuber = this.comicCNuberMax
+                    }})
             } else {
                 this.comicCNuber = value
             }
@@ -602,12 +608,17 @@ var vueApp = new Vue({
                 vm.showComic = true
             })
         },
+        chaperBuntton: function (value) {
+            this.comicNumber = value
+            this.changeComicNumber()
+        },
         getInfoLog: function () {
             this.$axios.post('/yuyuyui/getInfoLog', {})
                 .then(res => {
                     this.novelTable = res.data.novelList
                     this.comicChapterMax = res.data.comicChapterMax
                     this.comicChapterPage = res.data.comicChapterPage
+                    this.comicNumber = res.data.comicChapterMax
                     //window.console.log(res.data)
                 })
         }

@@ -491,16 +491,21 @@
                 </div>
             </div>
             <div v-if="activeNav=='6'">
-                <div style="text-align: center">
-                    第&nbsp;<el-input-number v-model="comicNumber" :min="1" :max="comicChapterMax" @change=changeComicNumber></el-input-number>&nbsp;话
-                    <el-input-number v-model="comicCNuber" :min="1" :max="comicCNuberMax" @change=changeComicPageNumber></el-input-number>
+                <div style="text-align:center;margin: 0 0 50px 0">
+                    <template v-for="(item,index) in comicChapterMax" >
+                        <el-badge :value="'new'" style="margin-left: 10px;margin-bottom: 3px" v-if="comicChapterMax==(index+1)">
+                            <el-button :type="comicNumber==(index+1)?'primary':''" @click="chaperBuntton(index+1)">第{{index+1}}话</el-button>
+                        </el-badge>
+                        <el-button :type="comicNumber==(index+1)?'primary':''" @click="chaperBuntton(index+1)" v-else>第{{index+1}}话</el-button>
+                    </template>
+
                 </div>
                 <div style="width: 100%;text-align: center" v-if="showComic">
-                    <img :src="'http://justmadao.club/comic/'+comicNumber+'-'+comicCNuber+'.jpg'" style="height: 1440px" @click="changeComicCNumber(comicCNuber+1)">
+                    <img :src="'http://justmadao.club/comic/'+comicNumber+'-'+comicCNuber+'.jpg'" style="height: 1440px" @click="changeComicPageNumber(comicCNuber+1)">
                 </div>
                 <div style="text-align: center">
                     第&nbsp;<el-input-number v-model="comicNumber" :min="1" :max="comicChapterMax" @change=changeComicNumber></el-input-number>&nbsp;话
-                    <el-input-number v-model="comicCNuber" :min="1" :max="comicCNuberMax" @change=changeComicPageNumber></el-input-number>
+                    <el-input-number v-model="comicCNuber" :min="1" :max="comicCNuberMax+1" @change=changeComicPageNumber></el-input-number>
                 </div>
             </div>
             <div v-if="activeNav=='3'">
