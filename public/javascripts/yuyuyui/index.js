@@ -9,12 +9,14 @@ function ismobile() {
     return res.length > 0;
 }
 
+var ism=ismobile()
+
 var vueApp = new Vue({
     el: '#vueApp',
     data: {
         userDto: null,
         activeNav: '1',
-        ismobile: ismobile(),
+        ismobile: ism,
         loginForm: {
             username: '',
             password: '',
@@ -215,7 +217,7 @@ var vueApp = new Vue({
             {title: '上里日向是巫女02.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu2.pdf'},
             {title: '上里日向是巫女03.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu3.pdf'},
             {title: '上里日向是巫女04.pdf',url:'https://yu.asia.gs.wasuyu.com/UesatoHinataWaMikoDearu4.pdf'},
-            {title: '上里日向是巫女05.pdf',url:'http://172.81.238.32:3000/novel/%E4%B8%8A%E9%87%8C%E6%97%A5%E5%90%91%E6%98%AF%E5%B7%AB%E5%A5%B305.pdf'}
+            {title: '上里日向是巫女05.pdf',url:'http://justmadao.club/novel/%E4%B8%8A%E9%87%8C%E6%97%A5%E5%90%91%E6%98%AF%E5%B7%AB%E5%A5%B305.pdf'}
         ],
         comicNumber: 1,
         comicCNuber: 1
@@ -399,7 +401,7 @@ var vueApp = new Vue({
                     this.videoBase = 'http://justmadao.club/video/';
                     break;
                 case 2:
-                    this.videoBase = 'http://172.81.238.32:3000/video/';
+                    this.videoBase = 'http://justmadao.club/video/';
                     break;
             }
             this.dpInit()
@@ -480,9 +482,9 @@ var vueApp = new Vue({
         },
         getCardPath: function (type, path) {
             if (type == 1) {
-                return 'http://172.81.238.32:3000' + path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
+                return 'http://justmadao.club' + path.replace('yuyuyui', '/images/thumbnail').replace('png', 'jpg')
             } else {
-                return 'http://172.81.238.32:3000' + path.replace('yuyuyui', '/images/cards')
+                return 'http://justmadao.club' + path.replace('yuyuyui', '/images/cards')
             }
         },
         toCardInfo: function (card) {
@@ -541,7 +543,7 @@ var vueApp = new Vue({
             formdata.append("pic", file);
             formdata.append("fileName", fileName);
             //this.$axios.post('/yuyuyui/uploadCardImg', formdata)
-            this.$axios.post('http://172.81.238.32:3000/yuyuyui/uploadCardImg', formdata)
+            this.$axios.post('http://justmadao.club/yuyuyui/uploadCardImg', formdata)
                 .then(res => {
                     if (res.data.status == 1) {
                         this.$alert('上传成功', '成功', {
@@ -632,7 +634,7 @@ var vueApp = new Vue({
     watch: {
         'activeNav': function (nv, ov) {
             if (nv == null) this.activeNav = ov
-            if (nv == '2-2' && this.ismobile) window.open('http://172.81.238.32:3000/template/elf.pdf')
+            if (nv == '2-2' && this.ismobile) window.open('http://justmadao.club/template/elf.pdf')
         }
     },
     created: function () {

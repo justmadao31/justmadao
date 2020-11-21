@@ -57,7 +57,7 @@
                             <el-carousel trigger="click" height="410px" type="card">
                                 <el-carousel-item v-for="(item,index) in newsList" :key="index">
                                     <div style="width: 100%;height: 360px;">
-                                        <img :src="'http://172.81.238.32:3000'+item.image"
+                                        <img :src="'http://justmadao.club'+item.image"
                                              style="display:block;height: 100%;margin:0 auto">
                                         <h3 style="position: absolute;bottom: 0;width:100%;text-align: center">
                                             {{item.title}}</h3>
@@ -175,10 +175,10 @@
                         <!--                        <video ref="video" style="width: 100%" controls v-show="videoUrl!=null">-->
                         <!--                            <source :src="videoUrl" type="video/mp4">-->
                         <!--                        </video>-->
-                        <el-button-group v-show="dp!=null">
-                            <el-button :type="videoRoute==1?'primary':''" @click="changeVideoRoute(1)">线路1</el-button>
-                            <el-button :type="videoRoute==2?'primary':''" @click="changeVideoRoute(2)">线路2</el-button>
-                        </el-button-group>
+<!--                        <el-button-group v-show="dp!=null">-->
+<!--                            <el-button :type="videoRoute==1?'primary':''" @click="changeVideoRoute(1)">线路1</el-button>-->
+<!--                            <el-button :type="videoRoute==2?'primary':''" @click="changeVideoRoute(2)">线路2</el-button>-->
+<!--                        </el-button-group>-->
                         <el-button type="danger" round @click="gotoXL" :disabled="activeVideoNode.data.src==''"
                                    v-if="activeVideoNode!=null&&activeVideoNode.data.leaf==1">新浪视频
                         </el-button>
@@ -466,7 +466,7 @@
                 </div>
             </div>
             <div v-if="activeNav=='2-2'" style="padding: 0">
-                <iframe v-if="!ismobile" src="http://172.81.238.32:3000/template/elf.pdf"
+                <iframe v-if="!ismobile" src="http://justmadao.club/template/elf.pdf"
                         style="width: 100%;min-height: 1440px"></iframe>
             </div>
             <div v-if="activeNav=='5'">
@@ -496,7 +496,7 @@
                     <el-input-number v-model="comicCNuber" :min="1" :max="comicCNuberMax" @change=changeComicCNumber></el-input-number>
                 </div>
                 <div style="width: 100%;text-align: center">
-                    <img :src="'http://172.81.238.32:3000/comic/'+comicNumber+'-'+comicCNuber+'.jpg'" style="height: 1440px" @click="changeComicCNumber(comicCNuber+1)">
+                    <img :src="'http://justmadao.club/comic/'+comicNumber+'-'+comicCNuber+'.jpg'" style="height: 1440px" @click="changeComicCNumber(comicCNuber+1)">
                 </div>
                 <div style="text-align: center">
                     第&nbsp;<el-input-number v-model="comicNumber" :min="1" :max="5" @change=changeComicNumber></el-input-number>&nbsp;话
@@ -510,9 +510,9 @@
                     海外党愿意支持的可以点这里：
                     <el-link type="primary" href="https://www.paypal.me/justmadao" target="_blank">paypal主页</el-link>
                     <div style="max-width:800px;display: flex;flex-direction: row;justify-content: space-between;margin-top: 20px">
-                        <el-image style="width: 300px" src="http://172.81.238.32:3000/images/zfb.JPG"
+                        <el-image style="width: 300px" src="http://justmadao.club/images/zfb.JPG"
                                   :fit="'fit'"></el-image>
-                        <el-image style="width: 300px" src="http://172.81.238.32:3000/images/wx.JPG"
+                        <el-image style="width: 300px" src="http://justmadao.club/images/wx.JPG"
                                   :fit="'fit'"></el-image>
                     </div>
                 </div>
