@@ -136,6 +136,14 @@ var vueApp = new Vue({
                 value: '25'
             },
             {
+                title: '安艺真铃',
+                value: '27'
+            },
+            {
+                title: '花本美佳',
+                value: '28'
+            },
+            {
                 title: '其他',
                 value: '26'
             }
